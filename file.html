@@ -1,0 +1,2540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Software Engineering — Complete Study Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Code+Pro:wght@400;600&family=Lato:wght@300;400;700&display=swap');
+
+  :root {
+    --bg: #0d0f14;
+    --surface: #13161d;
+    --surface2: #1a1e28;
+    --border: #252a38;
+    --accent: #4f8ef7;
+    --accent2: #7b5ea7;
+    --accent3: #3ecfb3;
+    --accent4: #f7974f;
+    --accent5: #f74f6b;
+    --text: #e2e8f0;
+    --text-muted: #7a8599;
+    --text-dim: #4a5568;
+    --gold: #f0c040;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 260px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 0 0 40px;
+    transition: transform .3s ease;
+  }
+  #sidebar::-webkit-scrollbar { width: 4px; }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .sidebar-header {
+    padding: 28px 20px 20px;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0;
+    background: var(--surface);
+    z-index: 1;
+  }
+  .sidebar-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: .02em;
+    line-height: 1.3;
+  }
+  .sidebar-header p {
+    font-size: .72rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .nav-section { padding: 14px 0 0; }
+  .nav-label {
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 0 20px 6px;
+  }
+  .nav-item {
+    display: block;
+    padding: 7px 20px;
+    font-size: .8rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: all .15s;
+    cursor: pointer;
+  }
+  .nav-item:hover { color: var(--text); background: var(--surface2); }
+  .nav-item.active { color: var(--accent); border-left-color: var(--accent); background: rgba(79,142,247,.08); }
+
+  /* ── MAIN ── */
+  #main {
+    margin-left: 260px;
+    min-height: 100vh;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #0d0f14 0%, #13161d 40%, #1a1428 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 80px 60px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(79,142,247,.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.2rem;
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -.02em;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #e2e8f0 0%, #7b9fff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-sub {
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    line-height: 1.6;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 36px;
+    flex-wrap: wrap;
+  }
+  .stat { text-align: left; }
+  .stat-num {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label { font-size: .72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .1em; margin-top: 4px; }
+
+  /* ── CHAPTER SECTIONS ── */
+  .chapter-section {
+    padding: 60px 60px 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  .chapter-section:last-child { border-bottom: none; }
+
+  .ch-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+  .ch-num {
+    font-family: 'Source Code Pro', monospace;
+    font-size: .7rem;
+    font-weight: 600;
+    color: var(--text-dim);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    margin-top: 4px;
+    letter-spacing: .06em;
+  }
+  .ch-title-block {}
+  .ch-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  .ch-subtitle {
+    font-size: .82rem;
+    color: var(--text-muted);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+
+  /* color bands */
+  .band-blue .ch-title { color: #7fb3ff; }
+  .band-blue .ch-num { border-color: rgba(79,142,247,.3); color: var(--accent); }
+  .band-purple .ch-title { color: #b89ff5; }
+  .band-purple .ch-num { border-color: rgba(123,94,167,.4); color: var(--accent2); }
+  .band-teal .ch-title { color: #6fe8d0; }
+  .band-teal .ch-num { border-color: rgba(62,207,179,.3); color: var(--accent3); }
+  .band-orange .ch-title { color: #f7c06a; }
+  .band-orange .ch-num { border-color: rgba(247,151,79,.3); color: var(--accent4); }
+  .band-red .ch-title { color: #f99090; }
+  .band-red .ch-num { border-color: rgba(247,79,107,.3); color: var(--accent5); }
+  .band-gold .ch-title { color: var(--gold); }
+  .band-gold .ch-num { border-color: rgba(240,192,64,.3); color: var(--gold); }
+
+  /* ── CONTENT BLOCKS ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .grid-auto { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 20px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .card:hover { border-color: rgba(79,142,247,.3); box-shadow: 0 4px 20px rgba(0,0,0,.3); }
+
+  .card-title {
+    font-weight: 700;
+    font-size: .85rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-blue { background: var(--accent); }
+  .dot-purple { background: var(--accent2); }
+  .dot-teal { background: var(--accent3); }
+  .dot-orange { background: var(--accent4); }
+  .dot-red { background: var(--accent5); }
+  .dot-gold { background: var(--gold); }
+
+  .card ul { list-style: none; }
+  .card ul li {
+    padding: 5px 0;
+    font-size: .84rem;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li::before {
+    content: '›';
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .card p { font-size: .84rem; color: var(--text-muted); }
+
+  /* highlighted card */
+  .card-highlight {
+    background: linear-gradient(135deg, rgba(79,142,247,.06) 0%, rgba(123,94,167,.06) 100%);
+    border-color: rgba(79,142,247,.25);
+  }
+
+  /* ── TABLE ── */
+  .tbl-wrap { overflow-x: auto; margin-bottom: 20px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .82rem;
+  }
+  thead th {
+    background: var(--surface2);
+    color: var(--accent);
+    font-weight: 700;
+    font-size: .72rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--border);
+    text-align: left;
+  }
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:hover { background: var(--surface); }
+  tbody td { padding: 10px 14px; color: var(--text-muted); vertical-align: top; }
+  tbody td:first-child { color: var(--text); font-weight: 700; }
+
+  /* ── DEFINITION LIST ── */
+  .def-list { display: grid; gap: 10px; margin-bottom: 20px; }
+  .def-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-size: .84rem;
+  }
+  .def-term {
+    font-weight: 700;
+    color: var(--accent3);
+    margin-bottom: 4px;
+    font-size: .82rem;
+    letter-spacing: .04em;
+  }
+  .def-desc { color: var(--text-muted); }
+
+  /* ── PROCESS FLOW ── */
+  .flow {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .flow-step {
+    flex: 1;
+    min-width: 110px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-right: none;
+    padding: 14px 12px;
+    font-size: .75rem;
+    text-align: center;
+    position: relative;
+    transition: background .2s;
+  }
+  .flow-step:first-child { border-radius: 6px 0 0 6px; }
+  .flow-step:last-child { border-right: 1px solid var(--border); border-radius: 0 6px 6px 0; }
+  .flow-step:hover { background: var(--surface2); }
+  .flow-step::after {
+    content: '›';
+    position: absolute;
+    right: -10px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dim);
+    font-size: 1rem;
+    z-index: 1;
+  }
+  .flow-step:last-child::after { display: none; }
+  .flow-num {
+    font-family: 'Source Code Pro', monospace;
+    font-size: .65rem;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+  .flow-label { font-weight: 700; color: var(--text); font-size: .78rem; }
+  .flow-desc { color: var(--text-muted); margin-top: 4px; font-size: .72rem; }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-left: 4px solid var(--accent);
+    background: rgba(79,142,247,.06);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 20px;
+    font-size: .84rem;
+    color: var(--text-muted);
+  }
+  .callout strong { color: var(--text); }
+  .callout.teal { border-left-color: var(--accent3); background: rgba(62,207,179,.06); }
+  .callout.orange { border-left-color: var(--accent4); background: rgba(247,151,79,.06); }
+  .callout.purple { border-left-color: var(--accent2); background: rgba(123,94,167,.06); }
+  .callout.red { border-left-color: var(--accent5); background: rgba(247,79,107,.06); }
+  .callout.gold { border-left-color: var(--gold); background: rgba(240,192,64,.06); }
+
+  /* ── TAG PILLS ── */
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+  .tag {
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid;
+  }
+  .tag-blue { color: var(--accent); border-color: rgba(79,142,247,.4); background: rgba(79,142,247,.08); }
+  .tag-teal { color: var(--accent3); border-color: rgba(62,207,179,.4); background: rgba(62,207,179,.08); }
+  .tag-purple { color: var(--accent2); border-color: rgba(123,94,167,.4); background: rgba(123,94,167,.08); }
+  .tag-orange { color: var(--accent4); border-color: rgba(247,151,79,.4); background: rgba(247,151,79,.08); }
+  .tag-red { color: var(--accent5); border-color: rgba(247,79,107,.4); background: rgba(247,79,107,.08); }
+
+  /* ── SECTION HEADING ── */
+  .sec-h {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 32px 0 14px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sec-h::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    margin-left: 6px;
+  }
+
+  .sub-h {
+    font-size: .82rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 20px 0 10px;
+  }
+
+  /* ── CODE INLINE ── */
+  code {
+    font-family: 'Source Code Pro', monospace;
+    font-size: .8em;
+    background: var(--surface2);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--accent3);
+    border: 1px solid var(--border);
+  }
+
+  /* ── ACCORDION ── */
+  details {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 8px;
+    background: var(--surface);
+  }
+  summary {
+    padding: 12px 16px;
+    font-size: .84rem;
+    font-weight: 700;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+  }
+  summary::after { content: '+'; color: var(--text-dim); font-size: 1.1rem; transition: transform .2s; }
+  details[open] summary::after { transform: rotate(45deg); }
+  details[open] summary { color: var(--accent); border-bottom: 1px solid var(--border); }
+  .details-body { padding: 14px 16px; font-size: .83rem; color: var(--text-muted); }
+  .details-body ul { list-style: none; }
+  .details-body li { padding: 4px 0 4px 16px; position: relative; border-bottom: 1px solid rgba(255,255,255,.04); }
+  .details-body li:last-child { border-bottom: none; }
+  .details-body li::before { content: '→'; position: absolute; left: 0; color: var(--accent3); }
+
+  /* ── MOBILE ── */
+  #menu-btn {
+    display: none;
+    position: fixed;
+    bottom: 20px; right: 20px;
+    z-index: 200;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 48px; height: 48px;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+
+  @media (max-width: 900px) {
+    #sidebar { transform: translateX(-100%); }
+    #sidebar.open { transform: translateX(0); }
+    #main { margin-left: 0; }
+    .hero { padding: 40px 24px 32px; }
+    .hero h1 { font-size: 2rem; }
+    .chapter-section { padding: 36px 24px 28px; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    #menu-btn { display: flex; align-items: center; justify-content: center; }
+    .flow { flex-direction: column; }
+    .flow-step { border-right: 1px solid var(--border); border-bottom: none; border-radius: 0; }
+    .flow-step:first-child { border-radius: 6px 6px 0 0; }
+    .flow-step:last-child { border-bottom: 1px solid var(--border); border-radius: 0 0 6px 6px; }
+    .flow-step::after { content: '↓'; right: auto; left: 50%; bottom: -10px; top: auto; transform: translateX(-50%); }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <h1>Software Engineering</h1>
+    <p>CS3022 / CS3023 — Full Study Guide</p>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Foundations</div>
+    <a class="nav-item" href="#ch1">Ch 1 — Introduction</a>
+    <a class="nav-item" href="#ch2">Ch 2 — Software Processes</a>
+    <a class="nav-item" href="#ch3">Ch 3 — Agile Development</a>
+    <a class="nav-item" href="#ch4">Ch 4 — Requirements Engineering</a>
+    <a class="nav-item" href="#ch5">Ch 5 — System Modeling</a>
+    <a class="nav-item" href="#ch6">Ch 6 — Architectural Design</a>
+    <a class="nav-item" href="#ch7">Ch 7 — Design & Implementation</a>
+    <a class="nav-item" href="#ch8">Ch 8 — Software Testing</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Evolution & Systems</div>
+    <a class="nav-item" href="#ch9">Ch 9 — Software Evolution</a>
+    <a class="nav-item" href="#ch10">Ch 10 — Sociotechnical Systems</a>
+    <a class="nav-item" href="#ch11">Ch 11 — Security & Dependability</a>
+    <a class="nav-item" href="#ch12">Ch 12 — Dependability Specification</a>
+    <a class="nav-item" href="#ch13">Ch 13 — Dependability Engineering</a>
+    <a class="nav-item" href="#ch14">Ch 14 — Security Engineering</a>
+    <a class="nav-item" href="#ch15">Ch 15 — D&S Assurance</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Reuse & Distributed</div>
+    <a class="nav-item" href="#ch16">Ch 16 — Software Reuse</a>
+    <a class="nav-item" href="#ch17">Ch 17 — Component-Based SE</a>
+    <a class="nav-item" href="#ch18">Ch 18 — Distributed SE</a>
+    <a class="nav-item" href="#ch19">Ch 19 — Service-Oriented Arch.</a>
+    <a class="nav-item" href="#ch20">Ch 20 — Embedded Systems</a>
+    <a class="nav-item" href="#ch21">Ch 21 — Aspect-Oriented SE</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Management & Cloud</div>
+    <a class="nav-item" href="#ch22">Ch 22 — Project Management</a>
+    <a class="nav-item" href="#ch23">Ch 23 — Project Planning</a>
+    <a class="nav-item" href="#ch24">Ch 24 — Quality Management</a>
+    <a class="nav-item" href="#ch25">Ch 25 — Configuration Mgmt</a>
+    <a class="nav-item" href="#ch26">Ch 26 — Process Improvement</a>
+    <a class="nav-item" href="#cloud">Cloud-Based Software</a>
+    <a class="nav-item" href="#devops">DevOps & Code Mgmt</a>
+    <a class="nav-item" href="#realtime">Real-Time SE</a>
+  </div>
+</nav>
+
+<button id="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+
+<!-- MAIN -->
+<main id="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">Complete Study Reference</div>
+    <h1>Software Engineering<br>Study Guide</h1>
+    <p class="hero-sub">Every chapter, every concept — from software processes and agile methods to distributed systems, security engineering, and DevOps. Structured for exam revision.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">26+</div><div class="stat-label">Chapters</div></div>
+      <div class="stat"><div class="stat-num">3</div><div class="stat-label">Specialist Topics</div></div>
+      <div class="stat"><div class="stat-num">300+</div><div class="stat-label">Key Concepts</div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       CH 1 — INTRODUCTION
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-blue" id="ch1">
+    <div class="ch-header">
+      <div class="ch-num">CH 01</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Introduction to Software Engineering</div>
+        <div class="ch-subtitle">What is SE · Products · Ethics · Case Studies</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Core Definition:</strong> Software engineering is an engineering discipline concerned with <em>all aspects</em> of software production — from early specification through to maintaining the system after use. It applies appropriate theories and methods within organizational and financial constraints.
+    </div>
+
+    <div class="sec-h">Software Products & Costs</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Generic Products</div>
+        <ul>
+          <li>Stand-alone systems sold to any customer</li>
+          <li>Specification owned by the <em>developer</em></li>
+          <li>Examples: PC software, CAD tools, dentist appointment systems</li>
+          <li>Developer decides when to change the product</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-purple"></span>Customized Products</div>
+        <ul>
+          <li>Commissioned by a specific customer</li>
+          <li>Specification owned by the <em>customer</em></li>
+          <li>Examples: embedded control systems, air traffic control, traffic monitoring</li>
+          <li>Customer decides on changes</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout orange">
+      <strong>Software Costs Key Fact:</strong> Software costs often dominate computer system costs. ~60% of costs are development, 40% are testing. For custom software, <em>evolution costs often exceed development costs</em>.
+    </div>
+
+    <div class="sec-h">Essential Attributes of Good Software</div>
+    <div class="grid-2">
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Maintainability</div><div class="def-desc">Must evolve to meet changing customer needs — a critical attribute in a changing business environment.</div></div>
+        <div class="def-item"><div class="def-term">Dependability & Security</div><div class="def-desc">Includes reliability, security, and safety. Should not cause physical or economic damage on failure.</div></div>
+        <div class="def-item"><div class="def-term">Efficiency</div><div class="def-desc">No wasteful use of system resources (memory, processor cycles). Includes responsiveness and processing time.</div></div>
+        <div class="def-item"><div class="def-term">Acceptability</div><div class="def-desc">Must be understandable, usable, and compatible with other systems used by its target users.</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>Software Process Activities</div>
+        <ul>
+          <li><strong>Specification</strong> — define what the system should do</li>
+          <li><strong>Development</strong> — design and program the software</li>
+          <li><strong>Validation</strong> — check it meets customer requirements</li>
+          <li><strong>Evolution</strong> — modify to reflect changing needs</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec-h">Software Engineering Ethics (ACM/IEEE Code)</div>
+    <div class="grid-3">
+      <div class="card"><div class="card-title"><span class="dot dot-blue"></span>1. Public</div><p>Act consistently with the public interest.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-blue"></span>2. Client & Employer</div><p>Act in the best interests of client/employer, consistent with public interest.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-blue"></span>3. Product</div><p>Ensure products meet the highest professional standards.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-purple"></span>4. Judgment</div><p>Maintain integrity and independence in professional judgment.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-purple"></span>5. Management</div><p>Promote an ethical approach to software management.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-purple"></span>6. Profession</div><p>Advance integrity and reputation of the profession.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-teal"></span>7. Colleagues</div><p>Be fair to and supportive of colleagues.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-teal"></span>8. Self</div><p>Participate in lifelong learning and promote an ethical approach.</p></div>
+    </div>
+
+    <div class="sec-h">Three Case Studies Used Throughout the Book</div>
+    <div class="grid-3">
+      <div class="card card-highlight">
+        <div class="card-title"><span class="dot dot-red"></span>Insulin Pump</div>
+        <p>Embedded safety-critical system. Controls blood sugar via micro-pump. Low sugar → coma/death; high sugar → organ damage. <strong>Hard real-time, safety-critical.</strong></p>
+      </div>
+      <div class="card card-highlight">
+        <div class="card-title"><span class="dot dot-purple"></span>MHC-PMS</div>
+        <p>Mental Health Care Patient Management System. Centralized patient database. Key concerns: <strong>privacy</strong> (confidentiality) and <strong>safety</strong> (suicidal patients).</p>
+      </div>
+      <div class="card card-highlight">
+        <div class="card-title"><span class="dot dot-teal"></span>Wilderness Weather Station</div>
+        <p>Data collection system with remote sensors. Collects temperature, pressure, rainfall, wind. Includes station maintenance system via satellite.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 2 — SOFTWARE PROCESSES
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-purple" id="ch2">
+    <div class="ch-header">
+      <div class="ch-num">CH 02</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Software Processes</div>
+        <div class="ch-subtitle">Process Models · Activities · Change · RUP</div>
+      </div>
+    </div>
+
+    <div class="callout purple">
+      <strong>Definition:</strong> A software process is a structured set of activities required to develop a software system. All involve specification, design/implementation, validation, and evolution. A <em>software process model</em> is an abstract representation of a process from a particular perspective.
+    </div>
+
+    <div class="sec-h">Three Core Process Models</div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Waterfall Model</div>
+        <ul>
+          <li>Plan-driven — phases in sequence</li>
+          <li>Requirements → Design → Implementation → Testing → Operation</li>
+          <li>Hard to accommodate change mid-process</li>
+          <li>Best for: large systems at multiple sites with stable requirements</li>
+          <li>Problem: inflexible partitioning</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>Incremental Development</div>
+        <ul>
+          <li>Specification, development, validation interleaved</li>
+          <li>System developed as a series of versions</li>
+          <li><strong>Benefits:</strong> reduced cost of change, easier feedback, faster delivery</li>
+          <li><strong>Problems:</strong> process not visible, structure degrades over time</li>
+          <li>Can be plan-driven or agile</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-purple"></span>Reuse-Oriented SE</div>
+        <ul>
+          <li>System assembled from existing components or COTS</li>
+          <li>Stages: component analysis → requirements modification → design with reuse → integration</li>
+          <li>Now the standard approach for many business systems</li>
+          <li>Types: web services, component packages, stand-alone COTS</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec-h">Process Activities in Detail</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Requirements Engineering Process</div>
+        <ul>
+          <li><strong>Feasibility study</strong> — technically and financially feasible?</li>
+          <li><strong>Requirements elicitation & analysis</strong> — what do stakeholders need?</li>
+          <li><strong>Requirements specification</strong> — define requirements in detail</li>
+          <li><strong>Requirements validation</strong> — check validity of requirements</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>Design Activities</div>
+        <ul>
+          <li><strong>Architectural design</strong> — overall structure and components</li>
+          <li><strong>Interface design</strong> — interfaces between components</li>
+          <li><strong>Component design</strong> — design of individual components</li>
+          <li><strong>Database design</strong> — data structures and representations</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec-h">Testing Stages</div>
+    <div class="flow">
+      <div class="flow-step"><div class="flow-num">Stage 1</div><div class="flow-label">Development Testing</div><div class="flow-desc">Individual components tested independently</div></div>
+      <div class="flow-step"><div class="flow-num">Stage 2</div><div class="flow-label">System Testing</div><div class="flow-desc">Test system as a whole; emergent properties</div></div>
+      <div class="flow-step"><div class="flow-num">Stage 3</div><div class="flow-label">Acceptance Testing</div><div class="flow-desc">Test with customer data; meets customer needs?</div></div>
+    </div>
+
+    <div class="sec-h">Coping With Change</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-orange"></span>Change Avoidance</div>
+        <p>Include activities that anticipate changes before rework is needed. E.g., build a prototype to explore requirements.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-orange"></span>Change Tolerance</div>
+        <p>Design the process so changes can be made at relatively low cost — usually via incremental development.</p>
+      </div>
+    </div>
+
+    <div class="sec-h">Prototyping</div>
+    <div class="callout">
+      A prototype is an initial version of a system used to demonstrate concepts and try out design options. Benefits: improved usability, closer match to needs, improved design quality, reduced development effort. <strong>Throw-away prototypes</strong> should be discarded — they are not a good basis for production.
+    </div>
+
+    <div class="sec-h">Rational Unified Process (RUP)</div>
+    <div class="flow">
+      <div class="flow-step"><div class="flow-num">Phase 1</div><div class="flow-label">Inception</div><div class="flow-desc">Establish business case</div></div>
+      <div class="flow-step"><div class="flow-num">Phase 2</div><div class="flow-label">Elaboration</div><div class="flow-desc">Understand problem domain &amp; architecture</div></div>
+      <div class="flow-step"><div class="flow-num">Phase 3</div><div class="flow-label">Construction</div><div class="flow-desc">System design, programming, testing</div></div>
+      <div class="flow-step"><div class="flow-num">Phase 4</div><div class="flow-label">Transition</div><div class="flow-desc">Deploy to operating environment</div></div>
+    </div>
+    <div class="callout teal"><strong>RUP Good Practice:</strong> Develop iteratively · Manage requirements · Use component-based architectures · Visually model software · Verify quality · Control changes.</div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 3 — AGILE
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-teal" id="ch3">
+    <div class="ch-header">
+      <div class="ch-num">CH 03</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Agile Software Development</div>
+        <div class="ch-subtitle">Agile Methods · XP · Scrum · Scaling</div>
+      </div>
+    </div>
+
+    <div class="callout teal">
+      <strong>Agile Manifesto Core Values:</strong> Individuals &amp; interactions <em>over</em> processes &amp; tools · Working software <em>over</em> comprehensive documentation · Customer collaboration <em>over</em> contract negotiation · Responding to change <em>over</em> following a plan.
+    </div>
+
+    <div class="sec-h">Agile Principles</div>
+    <div class="grid-2">
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Customer Involvement</div><div class="def-desc">Customers closely involved throughout; they provide and prioritize requirements and evaluate iterations.</div></div>
+        <div class="def-item"><div class="def-term">Incremental Delivery</div><div class="def-desc">Software developed in increments; customer specifies requirements for each increment.</div></div>
+        <div class="def-item"><div class="def-term">People Not Process</div><div class="def-desc">Team skills recognized and exploited; team develops its own ways of working.</div></div>
+      </div>
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Embrace Change</div><div class="def-desc">Expect requirements to change; design the system to accommodate them.</div></div>
+        <div class="def-item"><div class="def-term">Maintain Simplicity</div><div class="def-desc">Focus on simplicity in the software and the development process. Actively eliminate complexity.</div></div>
+      </div>
+    </div>
+
+    <div class="sec-h">Extreme Programming (XP)</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>XP Practices (a)</div>
+        <ul>
+          <li><strong>Incremental planning</strong> — story cards; stories broken into tasks</li>
+          <li><strong>Small releases</strong> — minimal useful set of functionality first</li>
+          <li><strong>Simple design</strong> — just enough to meet current requirements</li>
+          <li><strong>Test-first development</strong> — write tests before code</li>
+          <li><strong>Refactoring</strong> — continuous code improvement</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>XP Practices (b)</div>
+        <ul>
+          <li><strong>Pair programming</strong> — developers work in pairs</li>
+          <li><strong>Collective ownership</strong> — anyone can change anything</li>
+          <li><strong>Continuous integration</strong> — integrate and test after every task</li>
+          <li><strong>Sustainable pace</strong> — no excessive overtime</li>
+          <li><strong>On-site customer</strong> — customer is part of the team</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec-h">Scrum</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Scrum Process</div>
+        <ul>
+          <li><strong>Phases:</strong> Outline planning → Sprint cycles → Project closure</li>
+          <li>Sprints are fixed length (2–4 weeks)</li>
+          <li>Starting point: product backlog</li>
+          <li>Team isolated during sprint — comms through Scrum master</li>
+          <li>Sprint ends with review/demo to stakeholders</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Scrum Benefits</div>
+        <ul>
+          <li>Product broken into manageable chunks</li>
+          <li>Unstable requirements don't hold up progress</li>
+          <li>Whole team has visibility — improved communication</li>
+          <li>Customers see on-time delivery of increments</li>
+          <li>Trust between customers and developers established</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec-h">Scaling Agile</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-orange"></span>Scaling Up (Large Systems)</div>
+        <ul>
+          <li>Need more up-front design and documentation</li>
+          <li>Cross-team communication mechanisms essential</li>
+          <li>Continuous integration is practically impossible at scale</li>
+          <li>Large systems often "brownfield" — interact with existing systems</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-orange"></span>Scaling Out (Large Companies)</div>
+        <ul>
+          <li>Managers may resist risk of new approach</li>
+          <li>Quality procedures may conflict with agile</li>
+          <li>Wide range of skill levels in large organizations</li>
+          <li>Cultural resistance — long history with conventional processes</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 4 — REQUIREMENTS
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-orange" id="ch4">
+    <div class="ch-header">
+      <div class="ch-num">CH 04</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Requirements Engineering</div>
+        <div class="ch-subtitle">Functional · Non-Functional · Elicitation · Validation · Management</div>
+      </div>
+    </div>
+
+    <div class="callout orange">
+      <strong>Definition:</strong> Requirements engineering is the process of establishing the services the customer requires from a system and the constraints under which it operates and is developed. Requirements are descriptions of system services and constraints generated during this process.
+    </div>
+
+    <div class="sec-h">Types of Requirements</div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Functional Requirements</div>
+        <ul>
+          <li>Statements of services the system should provide</li>
+          <li>How system reacts to particular inputs</li>
+          <li>What the system should NOT do</li>
+          <li>Example: "A user shall be able to search appointment lists for all clinics"</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-purple"></span>Non-Functional Requirements</div>
+        <ul>
+          <li>Constraints on services or functions</li>
+          <li>Timing constraints, standards, dev-process constraints</li>
+          <li>Often apply to the system as a whole</li>
+          <li>May be more critical than functional — if not met, system unusable</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>Domain Requirements</div>
+        <ul>
+          <li>Constraints from the operational domain</li>
+          <li>May be new functional requirements or restrictions</li>
+          <li>Problems: understandability, implicitness</li>
+          <li>If not satisfied, system may be unworkable</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec-h">Non-Functional Requirement Classifications</div>
+    <div class="grid-3">
+      <div class="card"><div class="card-title"><span class="dot dot-orange"></span>Product Requirements</div><p>The delivered product must behave in a particular way — execution speed, reliability, etc.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-orange"></span>Organisational Requirements</div><p>Consequence of organisational policies — process standards, implementation requirements.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-orange"></span>External Requirements</div><p>From factors external to the system — interoperability, legislative requirements.</p></div>
+    </div>
+
+    <div class="sec-h">NFR Metrics</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Property</th><th>Measure</th></tr></thead>
+        <tbody>
+          <tr><td>Speed</td><td>Processed transactions/second · User/event response time · Screen refresh time</td></tr>
+          <tr><td>Size</td><td>Mbytes · Number of ROM chips</td></tr>
+          <tr><td>Ease of use</td><td>Training time · Number of help frames</td></tr>
+          <tr><td>Reliability</td><td>Mean time to failure · Probability of unavailability · Rate of failure occurrence</td></tr>
+          <tr><td>Robustness</td><td>Time to restart after failure · Percentage of events causing failure</td></tr>
+          <tr><td>Portability</td><td>Percentage of target-dependent statements · Number of target systems</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sec-h">Requirements Elicitation Techniques</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Interviews</div>
+        <ul>
+          <li>Formal (pre-determined questions) or open/informal</li>
+          <li>Good for overall understanding of stakeholder work</li>
+          <li>Not good for understanding domain requirements</li>
+          <li>Must be open-minded; use springboard questions</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>Ethnography</div>
+        <ul>
+          <li>Social scientist observes how people actually work</li>
+          <li>Reveals requirements from actual work vs. prescribed work</li>
+          <li>Good for understanding existing processes</li>
+          <li>Cannot identify new features that should be added</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-purple"></span>Scenarios / Use Cases</div>
+        <ul>
+          <li>Real-life examples of system use</li>
+          <li>Include: starting situation, normal flow, what can go wrong, end state</li>
+          <li>Use cases identify actors and describe interactions</li>
+          <li>Sequence diagrams add detail to use cases</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec-h">Requirements Validation</div>
+    <div class="callout">
+      <strong>Key fact:</strong> Fixing a requirements error after delivery may cost up to <strong>100×</strong> the cost of fixing an implementation error.
+    </div>
+    <div class="grid-3">
+      <div class="card"><div class="card-title"><span class="dot dot-red"></span>Validity</div><p>Does the system provide functions which best support customer needs?</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-red"></span>Consistency</div><p>Are there any requirements conflicts or contradictions?</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-red"></span>Completeness</div><p>Are all functions required by the customer included?</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-red"></span>Realism</div><p>Can requirements be implemented given available budget and technology?</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-red"></span>Verifiability</div><p>Can the requirements be tested/checked?</p></div>
+    </div>
+
+    <div class="sec-h">Requirements Change Management</div>
+    <div class="flow">
+      <div class="flow-step"><div class="flow-label">Problem Analysis</div><div class="flow-desc">Analyze if change is valid; fed back to requestor</div></div>
+      <div class="flow-step"><div class="flow-label">Change Analysis</div><div class="flow-desc">Assess effect using traceability; cost?</div></div>
+      <div class="flow-step"><div class="flow-label">Change Implementation</div><div class="flow-desc">Modify requirements doc, design, and implementation</div></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 5 — SYSTEM MODELING
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-blue" id="ch5">
+    <div class="ch-header">
+      <div class="ch-num">CH 05</div>
+      <div class="ch-title-block">
+        <div class="ch-title">System Modeling</div>
+        <div class="ch-subtitle">Context · Interaction · Structural · Behavioral · MDE</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Definition:</strong> System modeling is developing abstract models of a system, each presenting a different view. Now almost always uses graphical notation based on <strong>UML</strong>. Models help analysts understand functionality and communicate with customers.
+    </div>
+
+    <div class="sec-h">System Perspectives</div>
+    <div class="grid-2">
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">External Perspective</div><div class="def-desc">Model the context or environment — what lies outside the system boundaries.</div></div>
+        <div class="def-item"><div class="def-term">Interaction Perspective</div><div class="def-desc">Model interactions between system and environment, or between system components.</div></div>
+      </div>
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Structural Perspective</div><div class="def-desc">Model the organization of the system or data structures processed.</div></div>
+        <div class="def-item"><div class="def-term">Behavioral Perspective</div><div class="def-desc">Model dynamic behavior and how the system responds to events.</div></div>
+      </div>
+    </div>
+
+    <div class="sec-h">UML Diagram Types</div>
+    <div class="grid-3">
+      <div class="card"><div class="card-title"><span class="dot dot-blue"></span>Activity Diagrams</div><p>Show activities involved in a process or data processing.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-blue"></span>Use Case Diagrams</div><p>Show interactions between a system and its environment — actors and use cases.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-blue"></span>Sequence Diagrams</div><p>Show interactions between actors and system, and between system components over time.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-purple"></span>Class Diagrams</div><p>Show object classes in the system and associations between them.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-purple"></span>State Diagrams</div><p>Show how the system reacts to internal and external events — states and transitions.</p></div>
+    </div>
+
+    <div class="sec-h">Behavioral Models</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>Data-Driven Modeling</div>
+        <ul>
+          <li>Driven by data — controlled by input data</li>
+          <li>Shows sequence of actions in processing data</li>
+          <li>Useful for showing end-to-end processing</li>
+          <li>Represented using activity diagrams</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>Event-Driven / State Machine</div>
+        <ul>
+          <li>System has finite number of states</li>
+          <li>Events cause transitions between states</li>
+          <li>Represented using UML statecharts</li>
+          <li>Used for real-time systems (e.g. microwave oven, insulin pump)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec-h">Model-Driven Engineering (MDE)</div>
+    <div class="callout teal">
+      MDE: models rather than programs are the principal outputs. Programs are generated automatically from models. <strong>Pros:</strong> higher abstraction, cheaper platform adaptation. <strong>Cons:</strong> models may not be right for implementation; translation costs. MDA uses CIM → PIM → PSM transformation chain.
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 6 — ARCHITECTURAL DESIGN
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-purple" id="ch6">
+    <div class="ch-header">
+      <div class="ch-num">CH 06</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Architectural Design</div>
+        <div class="ch-subtitle">Patterns · Views · MVC · Layered · Repository · Client-Server · Pipe & Filter</div>
+      </div>
+    </div>
+
+    <div class="callout purple">
+      <strong>Definition:</strong> Architectural design identifies the sub-systems making up a system and the framework for sub-system control and communication. It is an <em>early</em> stage, linking specification and design processes. <strong>Advantages:</strong> Stakeholder communication, system analysis, large-scale reuse.
+    </div>
+
+    <div class="sec-h">4+1 View Model of Software Architecture</div>
+    <div class="grid-2">
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Logical View</div><div class="def-desc">Key abstractions as objects or object classes.</div></div>
+        <div class="def-item"><div class="def-term">Process View</div><div class="def-desc">At run-time, how the system is composed of interacting processes.</div></div>
+        <div class="def-item"><div class="def-term">Development View</div><div class="def-desc">How the software is decomposed for development.</div></div>
+        <div class="def-item"><div class="def-term">Physical View</div><div class="def-desc">System hardware and how software is distributed across processors.</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-purple"></span>Architecture & System Characteristics</div>
+        <ul>
+          <li><strong>Performance</strong> — localise critical ops; use large-grain components</li>
+          <li><strong>Security</strong> — layered architecture; critical assets in inner layers</li>
+          <li><strong>Safety</strong> — localise safety-critical features</li>
+          <li><strong>Availability</strong> — include redundant components, fault tolerance</li>
+          <li><strong>Maintainability</strong> — fine-grain, replaceable components</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec-h">Key Architectural Patterns</div>
+
+    <details><summary>MVC (Model-View-Controller)</summary>
+      <div class="details-body"><ul>
+        <li>Separates presentation and interaction from system data</li>
+        <li>Model — manages data and operations</li>
+        <li>View — defines and manages data presentation</li>
+        <li>Controller — manages user interaction</li>
+        <li>When used: multiple ways to view/interact with data; unknown future requirements</li>
+        <li>Advantage: data and representation can change independently</li>
+        <li>Disadvantage: extra complexity when data model and interactions are simple</li>
+      </ul></div>
+    </details>
+
+    <details><summary>Layered Architecture</summary>
+      <div class="details-body"><ul>
+        <li>Organises system into layers with related functionality</li>
+        <li>Lower layers represent core services</li>
+        <li>When used: building on existing systems; multi-team development; multi-level security</li>
+        <li>Advantage: entire layers can be replaced if interface maintained</li>
+        <li>Disadvantage: clean separation is often difficult; performance issues</li>
+      </ul></div>
+    </details>
+
+    <details><summary>Repository Architecture</summary>
+      <div class="details-body"><ul>
+        <li>All data managed in a central repository; all components access it</li>
+        <li>Components do not interact directly — only through the repository</li>
+        <li>When used: large volumes of data must be stored for a long time</li>
+        <li>Advantage: components are independent; changes propagated to all; consistent data management</li>
+        <li>Disadvantage: single point of failure; inefficiencies in communication; hard to distribute</li>
+      </ul></div>
+    </details>
+
+    <details><summary>Client-Server Architecture</summary>
+      <div class="details-body"><ul>
+        <li>Stand-alone servers provide specific services (print, data management, etc.)</li>
+        <li>Clients call on these services</li>
+        <li>When used: shared database accessed from many locations; variable load</li>
+        <li>Advantage: servers can be distributed; general functionality available to all clients</li>
+        <li>Disadvantage: single point of failure; unpredictable performance; management problems if servers are in different organisations</li>
+      </ul></div>
+    </details>
+
+    <details><summary>Pipe and Filter Architecture</summary>
+      <div class="details-body"><ul>
+        <li>Each processing component (filter) is discrete and carries out one type of transformation</li>
+        <li>Data flows (as in a pipe) from one component to another</li>
+        <li>When used: data processing applications (batch and transaction-based)</li>
+        <li>Advantage: easy to understand; transformation reuse; can be sequential or concurrent</li>
+        <li>Disadvantage: data transfer format must be agreed; parsing/unparsing overhead</li>
+      </ul></div>
+    </details>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 7 — DESIGN & IMPLEMENTATION
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-teal" id="ch7">
+    <div class="ch-header">
+      <div class="ch-num">CH 07</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Design & Implementation</div>
+        <div class="ch-subtitle">OO Design · Design Patterns · Reuse · Configuration Management · Open Source</div>
+      </div>
+    </div>
+
+    <div class="sec-h">OO Design Process (Weather Station Example)</div>
+    <div class="flow">
+      <div class="flow-step"><div class="flow-label">Context & Interactions</div><div class="flow-desc">System context model + interaction model</div></div>
+      <div class="flow-step"><div class="flow-label">Architectural Design</div><div class="flow-desc">Identify major components</div></div>
+      <div class="flow-step"><div class="flow-label">Object Identification</div><div class="flow-desc">Identify principal system objects</div></div>
+      <div class="flow-step"><div class="flow-label">Design Models</div><div class="flow-desc">Static and dynamic models</div></div>
+      <div class="flow-step"><div class="flow-label">Interface Specification</div><div class="flow-desc">Specify object interfaces in UML</div></div>
+    </div>
+
+    <div class="sec-h">Design Patterns</div>
+    <div class="callout teal">
+      A design pattern is a way of reusing abstract knowledge about a problem and its solution. Pattern elements: <strong>Name</strong> · <strong>Problem description</strong> · <strong>Solution description</strong> (template, not concrete design) · <strong>Consequences</strong>.
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>Observer Pattern</div>
+        <ul>
+          <li>Separates display of object state from object itself</li>
+          <li>Used when multiple displays of state are needed</li>
+          <li>When state changes, all displays automatically notified</li>
+          <li>Consequence: optimisations to enhance display performance are impractical</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Other Common Patterns</div>
+        <ul>
+          <li><strong>Façade</strong> — tidy interfaces to related objects</li>
+          <li><strong>Iterator</strong> — standard way of accessing collection elements</li>
+          <li><strong>Decorator</strong> — extend class functionality at run-time</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec-h">Reuse Levels</div>
+    <div class="grid-2">
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Abstraction Level</div><div class="def-desc">Use knowledge of successful abstractions in your design — don't reuse software directly.</div></div>
+        <div class="def-item"><div class="def-term">Object Level</div><div class="def-desc">Directly reuse objects from a library.</div></div>
+        <div class="def-item"><div class="def-term">Component Level</div><div class="def-desc">Reuse collections of objects and classes as application components.</div></div>
+        <div class="def-item"><div class="def-term">System Level</div><div class="def-desc">Reuse entire application systems.</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-orange"></span>Open Source Licenses</div>
+        <ul>
+          <li><strong>GPL</strong> — reciprocal: if you use GPL code, your system must be open source</li>
+          <li><strong>LGPL</strong> — can link to open source without publishing your components</li>
+          <li><strong>BSD</strong> — non-reciprocal: can include in proprietary systems that are sold</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 8 — SOFTWARE TESTING
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-red" id="ch8">
+    <div class="ch-header">
+      <div class="ch-num">CH 08</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Software Testing</div>
+        <div class="ch-subtitle">Development Testing · TDD · Release Testing · User Testing</div>
+      </div>
+    </div>
+
+    <div class="callout red">
+      <strong>Key Principle:</strong> Testing can reveal the presence of errors, <em>NOT their absence</em>. Goal 1: demonstrate software meets requirements (validation testing). Goal 2: discover situations where behaviour is incorrect (defect testing).
+    </div>
+
+    <div class="sec-h">Verification vs Validation</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Verification</div>
+        <p>"Are we building the product right?" — Software should conform to its specification.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>Validation</div>
+        <p>"Are we building the right product?" — Software should do what the user really requires.</p>
+      </div>
+    </div>
+
+    <div class="sec-h">Stages of Testing</div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Development Testing</div>
+        <ul>
+          <li><strong>Unit testing</strong> — individual components in isolation</li>
+          <li><strong>Component testing</strong> — groups of units integrated; test interfaces</li>
+          <li><strong>System testing</strong> — all components integrated; test interactions</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-purple"></span>Release Testing</div>
+        <ul>
+          <li>Separate team tests a complete version</li>
+          <li>Black-box testing — derived from specification only</li>
+          <li>Convince customer system is good enough</li>
+          <li>Includes performance/stress testing</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>User Testing</div>
+        <ul>
+          <li><strong>Alpha</strong> — users test at developer's site</li>
+          <li><strong>Beta</strong> — release to users for experimentation</li>
+          <li><strong>Acceptance</strong> — customer decides if system should be accepted</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec-h">Testing Strategies</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-orange"></span>Partition Testing</div>
+        <p>Identify groups of inputs with common characteristics (equivalence partitions). Choose tests from each partition — the program behaves equivalently for all members of a class.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-orange"></span>Guideline-Based Testing</div>
+        <p>Use testing guidelines based on previous experience of common programmer errors. For sequences: test single values, sequences of different sizes, access first/middle/last elements, test zero-length sequences.</p>
+      </div>
+    </div>
+
+    <div class="sec-h">Test-Driven Development (TDD)</div>
+    <div class="flow">
+      <div class="flow-step"><div class="flow-label">Identify Increment</div><div class="flow-desc">Small, implementable functionality</div></div>
+      <div class="flow-step"><div class="flow-label">Write Test First</div><div class="flow-desc">As automated test; initially fails</div></div>
+      <div class="flow-step"><div class="flow-label">Implement</div><div class="flow-desc">Write code to pass the test</div></div>
+      <div class="flow-step"><div class="flow-label">Re-run All Tests</div><div class="flow-desc">All must pass; refactor if needed</div></div>
+      <div class="flow-step"><div class="flow-label">Next Increment</div><div class="flow-desc">Move to next functionality</div></div>
+    </div>
+    <div class="callout teal"><strong>TDD Benefits:</strong> Code coverage (every segment has a test) · Regression testing (incremental test suite) · Simplified debugging (failure points to new code) · Documentation (tests describe what code should do).</div>
+
+    <div class="sec-h">Inspections vs Testing</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Advantages of Inspections</div>
+        <ul>
+          <li>Errors don't mask other errors (static)</li>
+          <li>Incomplete versions can be inspected</li>
+          <li>Can check broader quality attributes (standards, portability)</li>
+          <li>Can be used before implementation</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-purple"></span>Limitations of Inspections</div>
+        <ul>
+          <li>Cannot check conformance with customer's real requirements</li>
+          <li>Cannot check non-functional characteristics (performance, usability)</li>
+          <li>Inspections and testing are <em>complementary</em>, not opposing</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 9 — SOFTWARE EVOLUTION
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-blue" id="ch9">
+    <div class="ch-header">
+      <div class="ch-num">CH 09</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Software Evolution</div>
+        <div class="ch-subtitle">Evolution Processes · Lehman's Laws · Maintenance · Reengineering · Legacy Systems</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Key Fact:</strong> The majority of the software budget in large companies is devoted to <em>changing and evolving existing software</em> rather than developing new software.
+    </div>
+
+    <div class="sec-h">Evolution vs Servicing vs Phase-out</div>
+    <div class="grid-3">
+      <div class="card"><div class="card-title"><span class="dot dot-teal"></span>Evolution</div><p>In operational use; new requirements proposed and implemented. System is actively growing.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-orange"></span>Servicing</div><p>Remains useful but only bug fixes and environment changes. <strong>No new functionality added.</strong></p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-red"></span>Phase-out</div><p>Software may still be used but no further changes are made to it.</p></div>
+    </div>
+
+    <div class="sec-h">Types of Maintenance</div>
+    <div class="grid-3">
+      <div class="card"><div class="card-title"><span class="dot dot-red"></span>Fault Repair</div><p>Changing system to correct deficiencies in how it meets requirements.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-orange"></span>Adaptive Maintenance</div><p>Changing system to operate in a different environment (hardware, OS, etc.).</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-blue"></span>Perfective Maintenance</div><p>Modifying system to satisfy new or changed requirements.</p></div>
+    </div>
+
+    <div class="sec-h">Lehman's Laws</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Law</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>Continuing Change</td><td>A program in real-world use must change or become progressively less useful.</td></tr>
+          <tr><td>Increasing Complexity</td><td>As a program evolves, its structure becomes more complex; extra resources needed to preserve simplicity.</td></tr>
+          <tr><td>Large Program Evolution</td><td>Program evolution is self-regulating — size, release intervals, errors are approximately invariant per release.</td></tr>
+          <tr><td>Organizational Stability</td><td>Development rate approximately constant over lifetime, independent of resources devoted.</td></tr>
+          <tr><td>Conservation of Familiarity</td><td>Incremental change in each release is approximately constant over lifetime.</td></tr>
+          <tr><td>Continuing Growth</td><td>Functionality must continually increase to maintain user satisfaction.</td></tr>
+          <tr><td>Declining Quality</td><td>Quality will decline unless modified to reflect changes in operational environment.</td></tr>
+          <tr><td>Feedback System</td><td>Evolution processes are multiagent, multiloop feedback systems.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sec-h">Reengineering vs Refactoring</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-purple"></span>Reengineering</div>
+        <ul>
+          <li>Re-structuring or re-writing part/all of a legacy system <em>without changing functionality</em></li>
+          <li>After a system has been maintained for some time</li>
+          <li>Uses automated tools</li>
+          <li>Advantages: reduced risk, reduced cost vs new development</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>Refactoring</div>
+        <ul>
+          <li>Continuous improvement throughout development/evolution</li>
+          <li>"Preventative maintenance" — slows down degradation</li>
+          <li>Improves structure, reduces complexity; does NOT add functionality</li>
+          <li>"Bad smells": duplicate code, long methods, switch statements, data clumping, speculative generality</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec-h">Legacy System Strategy</div>
+    <div class="grid-2">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Quality</th><th>Business Value</th><th>Strategy</th></tr></thead>
+          <tbody>
+            <tr><td>Low</td><td>Low</td><td>Scrap the system</td></tr>
+            <tr><td>Low</td><td>High</td><td>Re-engineer or replace</td></tr>
+            <tr><td>High</td><td>Low</td><td>Replace with COTS or scrap</td></tr>
+            <tr><td>High</td><td>High</td><td>Continue with normal maintenance</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 10 — SOCIOTECHNICAL SYSTEMS
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-purple" id="ch10">
+    <div class="ch-header">
+      <div class="ch-num">CH 10</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Sociotechnical Systems</div>
+        <div class="ch-subtitle">Complex Systems · Emergent Properties · Systems Engineering · Procurement · Operation</div>
+      </div>
+    </div>
+
+    <div class="callout purple">
+      <strong>Sociotechnical Systems</strong> include technical systems plus operational processes and people who use them. They are governed by organisational policies and rules. They are non-deterministic and have complex relationships with organisational objectives.
+    </div>
+
+    <div class="sec-h">STS Stack (Layers)</div>
+    <div class="def-list">
+      <div class="def-item"><div class="def-term">Equipment</div><div class="def-desc">Hardware devices (usually include an embedded system).</div></div>
+      <div class="def-item"><div class="def-term">Operating System</div><div class="def-desc">Provides common facilities for higher levels.</div></div>
+      <div class="def-item"><div class="def-term">Communications & Data Management</div><div class="def-desc">Middleware for remote systems and databases.</div></div>
+      <div class="def-item"><div class="def-term">Application Systems</div><div class="def-desc">Specific functionality for organisational requirements.</div></div>
+      <div class="def-item"><div class="def-term">Business Processes</div><div class="def-desc">Processes involving people and computer systems supporting business activities.</div></div>
+      <div class="def-item"><div class="def-term">Organisations → Society</div><div class="def-desc">Higher-level strategic activities; laws, regulation, culture.</div></div>
+    </div>
+
+    <div class="sec-h">Emergent Properties</div>
+    <div class="callout">
+      Properties of the system as a whole that <em>cannot be derived from the properties of components</em>. Can only be assessed once components are integrated. Examples: Volume, Reliability, Security, Repairability, Usability. Two types: <strong>Functional</strong> (appear when all parts work together) and <strong>Non-functional</strong> (reliability, performance, safety, security).
+    </div>
+
+    <div class="sec-h">Human Error: Swiss Cheese Model</div>
+    <div class="callout teal">
+      Failures in complex systems rarely have a single cause. Systems are designed with <strong>multiple barriers</strong> (diverse and redundant). No single barrier is perfect — there will be latent conditions. With multiple barriers, <em>all must fail</em> for a system failure to occur. Reason's Swiss Cheese model: holes in layers of defence must align for an accident to occur.
+    </div>
+
+    <div class="sec-h">Systems Engineering Stages</div>
+    <div class="flow">
+      <div class="flow-step"><div class="flow-label">Procurement</div><div class="flow-desc">Establish purpose; high-level requirements; decide on components to purchase</div></div>
+      <div class="flow-step"><div class="flow-label">Development</div><div class="flow-desc">Define requirements in detail; implement and test; define operational processes</div></div>
+      <div class="flow-step"><div class="flow-label">Operation</div><div class="flow-desc">Deploy; put into use; make changes as requirements emerge; decommission</div></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 11 — SECURITY & DEPENDABILITY
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-red" id="ch11">
+    <div class="ch-header">
+      <div class="ch-num">CH 11</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Security & Dependability</div>
+        <div class="ch-subtitle">Dependability Properties · Availability · Reliability · Safety · Security</div>
+      </div>
+    </div>
+
+    <div class="callout red">
+      <strong>Dependability</strong> reflects the user's degree of trust in the system — confidence that it will operate as expected and not fail in normal use. Covers reliability, availability, and security, which are <em>inter-dependent</em>.
+    </div>
+
+    <div class="sec-h">Principal Dependability Properties</div>
+    <div class="grid-2">
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Availability</div><div class="def-desc">Probability that the system will be up and running and able to deliver useful services. Takes repair time into account.</div></div>
+        <div class="def-item"><div class="def-term">Reliability</div><div class="def-desc">Probability the system will correctly deliver services as expected. Defined formally against a specification.</div></div>
+        <div class="def-item"><div class="def-term">Safety</div><div class="def-desc">How likely it is that the system will cause damage to people or the environment. Safety and reliability are related but distinct.</div></div>
+        <div class="def-item"><div class="def-term">Security</div><div class="def-desc">How likely the system can resist accidental or deliberate intrusions. Essential pre-requisite for availability and reliability.</div></div>
+      </div>
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Repairability</div><div class="def-desc">Extent to which system can be repaired after failure. Short-term perspective.</div></div>
+        <div class="def-item"><div class="def-term">Maintainability</div><div class="def-desc">Ease of adapting system to new requirements. Long-term perspective.</div></div>
+        <div class="def-item"><div class="def-term">Survivability</div><div class="def-desc">Ability to continue delivering services under hostile attack. Subsumes resilience.</div></div>
+        <div class="def-item"><div class="def-term">Error Tolerance</div><div class="def-desc">Extent to which user errors can be avoided and tolerated.</div></div>
+      </div>
+    </div>
+
+    <div class="sec-h">Reliability Terminology</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr><td>Human Error/Mistake</td><td>Human behaviour that introduces faults into a system.</td></tr>
+          <tr><td>System Fault</td><td>Characteristic of software that can lead to a system error.</td></tr>
+          <tr><td>System Error</td><td>Erroneous system state that can lead to unexpected behaviour.</td></tr>
+          <tr><td>System Failure</td><td>Event when system does not deliver service as expected by users.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout teal"><strong>Key Insight:</strong> Removing X% of faults does NOT necessarily improve reliability by X%. Faults in rarely-executed code may never be encountered. A program with known faults may still be perceived as reliable by users.</div>
+
+    <div class="sec-h">Security Terminology</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr><td>Asset</td><td>Something of value to be protected (software or data).</td></tr>
+          <tr><td>Exposure</td><td>Possible loss or harm — loss/damage to data, or loss of time/effort.</td></tr>
+          <tr><td>Vulnerability</td><td>Weakness in a system that may be exploited to cause loss or harm.</td></tr>
+          <tr><td>Attack</td><td>Exploitation of a system vulnerability — usually deliberate, from outside.</td></tr>
+          <tr><td>Threat</td><td>Circumstances that have potential to cause loss or harm (vulnerability + attack).</td></tr>
+          <tr><td>Control</td><td>Protective measure that reduces a system's vulnerability (e.g. encryption).</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 12 — DEPENDABILITY SPECIFICATION
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-orange" id="ch12">
+    <div class="ch-header">
+      <div class="ch-num">CH 12</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Dependability & Security Specification</div>
+        <div class="ch-subtitle">Risk-Driven Spec · Safety Spec · Reliability Metrics · Security Spec · Formal Methods</div>
+      </div>
+    </div>
+
+    <div class="sec-h">Risk-Driven Specification Stages</div>
+    <div class="flow">
+      <div class="flow-step"><div class="flow-label">Risk Identification</div><div class="flow-desc">Identify potential risks</div></div>
+      <div class="flow-step"><div class="flow-label">Risk Analysis & Classification</div><div class="flow-desc">Assess seriousness of each risk</div></div>
+      <div class="flow-step"><div class="flow-label">Risk Decomposition</div><div class="flow-desc">Find root causes of risks</div></div>
+      <div class="flow-step"><div class="flow-label">Risk Reduction Assessment</div><div class="flow-desc">Define how each risk must be eliminated/reduced</div></div>
+    </div>
+
+    <div class="sec-h">Hazard Assessment</div>
+    <div class="grid-3">
+      <div class="card"><div class="card-title"><span class="dot dot-red"></span>Intolerable Risk</div><p>Must never arise or result in an accident. No exceptions.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-orange"></span>ALARP</div><p>As Low As Reasonably Practical. Minimise possibility given cost and schedule constraints.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-teal"></span>Acceptable Risk</div><p>Consequences are acceptable; no extra costs should be incurred to reduce hazard probability.</p></div>
+    </div>
+
+    <div class="callout">
+      <strong>Fault-Tree Analysis</strong> — deductive, top-down technique. Put the hazard at the root; identify system states that could lead to it. Link with 'and'/'or' conditions. Goal: minimise number of single causes of failure.
+    </div>
+
+    <div class="sec-h">Reliability Metrics</div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-red"></span>POFOD</div>
+        <p><strong>Probability of Failure on Demand.</strong> For intermittent service demands. E.g. emergency shutdown systems. POFOD of 0.002 = 1 failure in 500 demands.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-orange"></span>ROCOF</div>
+        <p><strong>Rate of Occurrence of Failures.</strong> For high-volume processing. ROCOF 0.002 = 2 failures per 1000 hours. Reciprocal = <strong>MTTF</strong> (Mean Time to Failure).</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>Availability</div>
+        <p><strong>Fraction of time system is available.</strong> Takes repair time into account. Availability 0.999 = unavailable for 84 seconds per 24-hour period.</p>
+      </div>
+    </div>
+
+    <div class="sec-h">Formal Methods</div>
+    <div class="callout teal">
+      Formal methods use mathematical representation and analysis. Include: formal specification, specification analysis and proof, transformational development, program verification. <strong>Pros:</strong> forces detailed analysis; concurrent systems can be checked; detects implementation errors. <strong>Cons:</strong> specialised notation; very expensive; proofs may contain errors; hard to scale.
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 13 — DEPENDABILITY ENGINEERING
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-blue" id="ch13">
+    <div class="ch-header">
+      <div class="ch-num">CH 13</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Dependability Engineering</div>
+        <div class="ch-subtitle">Redundancy · Diversity · Dependable Architectures · N-Version Programming · Dependable Programming</div>
+      </div>
+    </div>
+
+    <div class="sec-h">Dependability Achievement Approaches</div>
+    <div class="grid-3">
+      <div class="card"><div class="card-title"><span class="dot dot-blue"></span>Fault Avoidance</div><p>Develop in a way that minimises the possibility of mistakes and prevents faults being introduced.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-purple"></span>Fault Detection</div><p>V&V techniques to discover and remove faults before deployment.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-teal"></span>Fault Tolerance</div><p>System continues in operation despite software faults in delivered software.</p></div>
+    </div>
+
+    <div class="sec-h">Redundancy & Diversity</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-orange"></span>Redundancy</div>
+        <p>Keep more than one version of a critical component. If one fails, a backup is available. E.g., backup servers in e-commerce systems.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-orange"></span>Diversity</div>
+        <p>Provide the same functionality in different ways so they will not fail in the same way. E.g., different OS versions (Windows + Linux) for resilience against external attacks.</p>
+      </div>
+    </div>
+
+    <div class="sec-h">Dependable System Architectures</div>
+    <details><summary>Protection Systems</summary>
+      <div class="details-body"><ul>
+        <li>Specialised system associated with a control system to take emergency action on failure</li>
+        <li>Independently monitors the controlled system and environment</li>
+        <li>Redundant: includes monitoring and control capabilities that replicate the control software</li>
+        <li>Diverse: uses different technology from the control software</li>
+        <li>Simpler than control system — more effort can be spent on validation</li>
+      </ul></div>
+    </details>
+    <details><summary>Self-Monitoring Architectures</summary>
+      <div class="details-body"><ul>
+        <li>Multi-channel architecture; system monitors its own operations</li>
+        <li>Same computation carried out on each channel; results compared</li>
+        <li>If results differ, failure is assumed and exception raised</li>
+        <li>Hardware and software in each channel must be diverse</li>
+        <li>Example: Airbus flight control system (5 computers, diverse processors, diverse OS, diverse programming languages)</li>
+      </ul></div>
+    </details>
+    <details><summary>N-Version Programming</summary>
+      <div class="details-body"><ul>
+        <li>Multiple (odd number, typically 3) versions carry out computations simultaneously</li>
+        <li>Results compared using a voting system; majority result taken as correct</li>
+        <li>Different teams develop each version; assumed low probability of same mistakes</li>
+        <li>Problem: teams often misinterpret specifications in the same way; chose same algorithms</li>
+        <li>Reliability improvement of 5–9× observed in practice</li>
+      </ul></div>
+    </details>
+
+    <div class="sec-h">Dependable Programming Guidelines</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>8 Key Guidelines</div>
+        <ul>
+          <li>Limit the visibility of information in a program</li>
+          <li>Check all inputs for validity</li>
+          <li>Provide a handler for all exceptions</li>
+          <li>Minimize the use of error-prone constructs</li>
+          <li>Provide restart capabilities</li>
+          <li>Check array bounds</li>
+          <li>Include timeouts when calling external components</li>
+          <li>Name all constants that represent real-world values</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-red"></span>Error-Prone Constructs to Avoid</div>
+        <ul>
+          <li>Unconditional goto statements</li>
+          <li>Floating-point numbers (imprecise comparisons)</li>
+          <li>Pointers (data corruption, aliasing)</li>
+          <li>Dynamic memory allocation (overflow)</li>
+          <li>Parallelism (timing errors)</li>
+          <li>Recursion (stack overflow)</li>
+          <li>Inheritance (non-localised code)</li>
+          <li>Unbounded arrays (buffer overflow)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 14 — SECURITY ENGINEERING
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-purple" id="ch14">
+    <div class="ch-header">
+      <div class="ch-num">CH 14</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Security Engineering</div>
+        <div class="ch-subtitle">Risk Management · Architectural Design · Design Guidelines · Survivability</div>
+      </div>
+    </div>
+
+    <div class="callout purple">
+      <strong>Security Engineering:</strong> Tools, techniques and methods to support development and maintenance of systems that can resist malicious attacks. <em>Application security</em> = software engineering problem (design to resist attacks). <em>Infrastructure security</em> = systems management problem (configure infrastructure).
+    </div>
+
+    <div class="sec-h">Misuse Cases (Threat Types)</div>
+    <div class="grid-2">
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Interception</div><div class="def-desc">Attacker gains access to an asset (loss of confidentiality).</div></div>
+        <div class="def-item"><div class="def-term">Interruption</div><div class="def-desc">Attacker makes part of a system unavailable (denial of service).</div></div>
+      </div>
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Modification</div><div class="def-desc">A system asset is tampered with.</div></div>
+        <div class="def-item"><div class="def-term">Fabrication</div><div class="def-desc">False information is added to a system.</div></div>
+      </div>
+    </div>
+
+    <div class="sec-h">Design Guidelines for Secure Systems</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Guidelines 1–5</div>
+        <ul>
+          <li><strong>Base decisions on explicit security policy</strong></li>
+          <li><strong>Avoid a single point of failure</strong> — failure only if more than one security failure</li>
+          <li><strong>Fail securely</strong> — sensitive info not accessible even on failure</li>
+          <li><strong>Balance security and usability</strong> — weaker security may sometimes be needed</li>
+          <li><strong>Log user actions</strong> — analysis of who did what; deterrent</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-purple"></span>Guidelines 6–10</div>
+        <ul>
+          <li><strong>Use redundancy and diversity to reduce risk</strong></li>
+          <li><strong>Validate all inputs</strong> — check all inputs are in range</li>
+          <li><strong>Compartmentalize your assets</strong> — users only access what they need</li>
+          <li><strong>Design for deployment</strong> — avoid deployment problems</li>
+          <li><strong>Design for recoverability</strong> — simplify recovery after attack</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec-h">Survivability Strategies</div>
+    <div class="grid-3">
+      <div class="card"><div class="card-title"><span class="dot dot-teal"></span>Resistance</div><p>Build capabilities into the system to <em>resist</em> attacks — avoid problems.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-orange"></span>Recognition</div><p>Build capabilities to <em>detect</em> attacks and failures, and assess the damage.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-red"></span>Recovery</div><p>Build capabilities to <em>deliver services whilst under attack</em> — tolerate problems.</p></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 15 — DEPENDABILITY ASSURANCE
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-teal" id="ch15">
+    <div class="ch-header">
+      <div class="ch-num">CH 15</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Dependability & Security Assurance</div>
+        <div class="ch-subtitle">Static Analysis · Reliability Testing · Security Testing · Safety Cases</div>
+      </div>
+    </div>
+
+    <div class="sec-h">Static Analysis Techniques</div>
+    <div class="grid-3">
+      <div class="card"><div class="card-title"><span class="dot dot-blue"></span>Formal Verification</div><p>Mathematical specification analyzed for consistency; program conformance to spec formally argued. Discovers spec errors, design errors, concurrency issues.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-blue"></span>Model Checking</div><p>Extended finite state model created; model checker explores all possible paths; checks user-specified property is valid on each path. Valuable for concurrent systems.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-blue"></span>Automated Static Analysis</div><p>Software tools parse program text and find potentially erroneous conditions. Very effective as aid to inspections. Particularly valuable for C (weak typing) and security checking (buffer overflows).</p></div>
+    </div>
+
+    <div class="sec-h">Reliability Testing</div>
+    <div class="flow">
+      <div class="flow-step"><div class="flow-label">Operational Profile</div><div class="flow-desc">Establish statistical model of use</div></div>
+      <div class="flow-step"><div class="flow-label">Build Test Data</div><div class="flow-desc">Reflects operational profile</div></div>
+      <div class="flow-step"><div class="flow-label">Test System</div><div class="flow-desc">Observe failures and times</div></div>
+      <div class="flow-step"><div class="flow-label">Compute Reliability</div><div class="flow-desc">After statistically significant failures</div></div>
+    </div>
+
+    <div class="sec-h">Safety & Dependability Cases</div>
+    <div class="callout teal">
+      A safety case is "a documented body of evidence that provides a convincing and valid argument that a system is adequately safe for a given application in a given environment." Required by regulators before a system can be certified. Based on <strong>structured arguments</strong> that use claims, evidence, and arguments to demonstrate safety.
+    </div>
+
+    <div class="callout">
+      <strong>Structured Safety Arguments:</strong> Based on proof by contradiction — assume unsafe state can be reached; show this is contradicted by the program code. Start from END of code, work backwards. Show all paths leading to exit contradict the assumption of unsafe exit.
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 16 — SOFTWARE REUSE
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-gold" id="ch16">
+    <div class="ch-header">
+      <div class="ch-num">CH 16</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Software Reuse</div>
+        <div class="ch-subtitle">Reuse Landscape · Application Frameworks · Product Lines · COTS · ERP</div>
+      </div>
+    </div>
+
+    <div class="callout gold">
+      <strong>Benefits of Reuse:</strong> Increased dependability (tried and tested) · Reduced process risk · Effective use of specialists · Standards compliance · Accelerated development. <strong>Problems:</strong> Increased maintenance costs · Lack of tool support · Not-invented-here syndrome · Component library management costs.
+    </div>
+
+    <div class="sec-h">Reuse Approaches</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-gold"></span>Application Frameworks</div>
+        <ul>
+          <li>Sub-system design made up of abstract and concrete classes</li>
+          <li>Types: System infrastructure, Middleware integration, Enterprise application, Web application (WAF)</li>
+          <li>MVC is a system infrastructure framework for GUI design</li>
+          <li>WAF features: security, dynamic web pages, database support, session management, AJAX</li>
+          <li>Problem: high complexity — takes time to learn to use effectively</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-gold"></span>COTS Products</div>
+        <ul>
+          <li>Systems adapted for different customers without changing source code</li>
+          <li>Benefits: rapid deployment, visible functionality, reduced development risk</li>
+          <li>Problems: requirements must be adapted; COTS product vendor controls evolution</li>
+          <li><strong>COTS-solution:</strong> single product, standard processes, vendor maintains</li>
+          <li><strong>COTS-integrated:</strong> multiple heterogeneous systems, flexible, customer maintains</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec-h">Software Product Lines</div>
+    <div class="callout">
+      A set of applications with a common architecture and shared components, each specialized to reflect different requirements. Specialization types: <strong>Platform</strong>, <strong>Environment</strong>, <strong>Functional</strong>, <strong>Process</strong>. Configuration types: <strong>Design time</strong> (source code modified) and <strong>Deployment time</strong> (embedded knowledge; source not changed).
+    </div>
+
+    <div class="sec-h">ERP Systems</div>
+    <div class="callout teal">
+      Enterprise Resource Planning systems support common business processes (ordering, invoicing, manufacturing). The most common form of software reuse in large companies. Configured via: selecting modules, establishing data model, defining business rules, specifying external interactions, designing forms/reports, setting parameters.
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 17 — CBSE
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-blue" id="ch17">
+    <div class="ch-header">
+      <div class="ch-num">CH 17</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Component-Based Software Engineering</div>
+        <div class="ch-subtitle">Components · Component Models · CBSE Processes · Composition</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Component Definition (Szyperski):</strong> A software component is a unit of composition with contractually specified interfaces and explicit context dependencies only. It can be deployed independently and is subject to composition by third-parties. <em>Key distinction from objects:</em> components have no 'requires' interface dependency on specific components.
+    </div>
+
+    <div class="sec-h">Component Characteristics</div>
+    <div class="grid-2">
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Standardized</div><div class="def-desc">Conforms to a standard component model (interfaces, metadata, composition, deployment).</div></div>
+        <div class="def-item"><div class="def-term">Independent</div><div class="def-desc">Can be composed and deployed without other specific components; external services explicitly stated.</div></div>
+        <div class="def-item"><div class="def-term">Composable</div><div class="def-desc">All external interactions through publicly defined interfaces; external access to metadata.</div></div>
+      </div>
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Deployable</div><div class="def-desc">Self-contained; binary (no compilation needed); can operate standalone on a component platform.</div></div>
+        <div class="def-item"><div class="def-term">Documented</div><div class="def-desc">Fully documented so potential users can decide if component meets their needs.</div></div>
+      </div>
+    </div>
+
+    <div class="sec-h">Component Interfaces</div>
+    <div class="grid-2">
+      <div class="card"><div class="card-title"><span class="dot dot-blue"></span>Provides Interface</div><p>Services that the component provides to others — the component's API. Methods that can be called by users of the component.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-purple"></span>Requires Interface</div><p>Services that must be made available for the component to execute as specified. Does NOT compromise independence — does not define HOW services should be provided.</p></div>
+    </div>
+
+    <div class="sec-h">Types of Component Composition</div>
+    <div class="grid-3">
+      <div class="card"><div class="card-title"><span class="dot dot-teal"></span>Sequential</div><p>Composed components executed in sequence. Composes the provides interfaces of each component.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-teal"></span>Hierarchical</div><p>One component calls on services of another. Provides interface of one composed with requires interface of another.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-teal"></span>Additive</div><p>Interfaces of two components put together to create a new component with combined interfaces.</p></div>
+    </div>
+
+    <div class="callout orange"><strong>Interface Incompatibility Types:</strong> Parameter incompatibility (same name, different types) · Operation incompatibility (different names for same operations) · Operation incompleteness (provides interface is a subset of requires). Resolved by <strong>Adaptor Components</strong>.</div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 18 — DISTRIBUTED SE
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-purple" id="ch18">
+    <div class="ch-header">
+      <div class="ch-num">CH 18</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Distributed Software Engineering</div>
+        <div class="ch-subtitle">Design Issues · Architectural Patterns · Client-Server · SaaS</div>
+      </div>
+    </div>
+
+    <div class="sec-h">Distributed System Design Issues</div>
+    <div class="grid-2">
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Transparency</div><div class="def-desc">To what extent should the distributed system appear to users as a single system? Resources abstracted logically; middleware maps logical to physical.</div></div>
+        <div class="def-item"><div class="def-term">Openness</div><div class="def-desc">Built according to generally accepted standards; components from any supplier can be integrated.</div></div>
+        <div class="def-item"><div class="def-term">Scalability</div><div class="def-desc">Size (add resources), Distribution (geographically disperse), Manageability. Scaling-up = more powerful; scaling-out = more instances.</div></div>
+      </div>
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Security</div><div class="def-desc">Attack surface significantly larger than centralized systems. Parts owned by different organizations with incompatible security policies.</div></div>
+        <div class="def-item"><div class="def-term">Quality of Service</div><div class="def-desc">Ability to deliver services dependably with acceptable response time and throughput. Critical for time-critical data (audio/video streams).</div></div>
+        <div class="def-item"><div class="def-term">Failure Management</div><div class="def-desc">System must be resilient to inevitable failures. Must detect failures, continue delivering services, and automatically recover.</div></div>
+      </div>
+    </div>
+
+    <div class="sec-h">Architectural Patterns Summary</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Pattern</th><th>When Used</th></tr></thead>
+        <tbody>
+          <tr><td>Master-Slave</td><td>Real-time systems requiring guaranteed interaction response times.</td></tr>
+          <tr><td>Two-tier Client-Server (Thin)</td><td>Legacy systems; data-intensive browsing (e.g., web).</td></tr>
+          <tr><td>Two-tier Client-Server (Fat)</td><td>Where application processing uses off-the-shelf software; computation-intensive; mobile apps.</td></tr>
+          <tr><td>Multi-tier Client-Server</td><td>Large-scale applications; volatile data and application; multiple data sources.</td></tr>
+          <tr><td>Distributed Component</td><td>Resources from different systems/databases need to be combined.</td></tr>
+          <tr><td>Peer-to-Peer</td><td>Clients exchange locally stored information; role of server is to introduce clients to each other.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sec-h">Software as a Service (SaaS)</div>
+    <div class="callout teal">
+      Software deployed on remote servers; accessed through web browser; owned/managed by provider; payment model is subscription or pay-per-use. <strong>Key design issues:</strong> Local/remote processing · Authentication · Information leakage · Multi-tenant vs multi-instance.
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 19 — SERVICE-ORIENTED ARCHITECTURE
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-teal" id="ch19">
+    <div class="ch-header">
+      <div class="ch-num">CH 19</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Service-Oriented Architecture</div>
+        <div class="ch-subtitle">Web Services · WSDL · Service Engineering · Composition · WS-BPEL</div>
+      </div>
+    </div>
+
+    <div class="callout teal">
+      SOA: developing distributed systems where components are stand-alone services that execute on different computers from different providers. Key standards: <strong>SOAP</strong> (message exchange), <strong>WSDL</strong> (interface definition), <strong>WS-BPEL</strong> (workflow/composition). RESTful services offer a lighter-weight alternative.
+    </div>
+
+    <div class="sec-h">WSDL Specification Components</div>
+    <div class="grid-3">
+      <div class="card"><div class="card-title"><span class="dot dot-teal"></span>Interface ("What")</div><p>Specifies what operations the service supports and the format of messages sent/received.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-teal"></span>Binding ("How")</div><p>Maps the abstract interface to a concrete set of protocols. Technical communication details.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-teal"></span>Endpoint ("Where")</div><p>Describes the location (URI) of the specific web service implementation.</p></div>
+    </div>
+
+    <div class="sec-h">Service Classification</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>Description</th><th>Examples</th></tr></thead>
+        <tbody>
+          <tr><td>Utility Services</td><td>General functionality used by different business processes</td><td>Currency converter, Document style checker</td></tr>
+          <tr><td>Business Services</td><td>Associated with a specific business function</td><td>Validate claim form, Check credit rating</td></tr>
+          <tr><td>Coordination Services</td><td>Support composite processes; always task-oriented</td><td>Process expense claim, Pay external supplier</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sec-h">Service Construction by Composition</div>
+    <div class="flow">
+      <div class="flow-step"><div class="flow-label">Formulate Workflow</div></div>
+      <div class="flow-step"><div class="flow-label">Discover Services</div></div>
+      <div class="flow-step"><div class="flow-label">Select Services</div></div>
+      <div class="flow-step"><div class="flow-label">Refine Workflow</div></div>
+      <div class="flow-step"><div class="flow-label">Create Program</div><div class="flow-desc">Java or WS-BPEL</div></div>
+      <div class="flow-step"><div class="flow-label">Test Service</div></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 20 / REAL-TIME SE
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-red" id="ch20">
+    <div class="ch-header">
+      <div class="ch-num">CH 20 / RT</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Embedded Systems & Real-Time SE</div>
+        <div class="ch-subtitle">Hard/Soft Real-Time · Architectural Patterns · Timing Analysis · RTOS</div>
+      </div>
+    </div>
+
+    <div class="callout red">
+      <strong>Real-Time System:</strong> Correct functioning depends on the results produced AND the time at which these results are produced. <strong>Hard real-time</strong> = operation is incorrect if timing not met. <strong>Soft real-time</strong> = operation is degraded if timing not met.
+    </div>
+
+    <div class="sec-h">Hard vs Soft Real-Time Examples</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-red"></span>Hard Real-Time</div>
+        <ul>
+          <li>Vehicle braking system</li>
+          <li>Insulin monitoring and delivery system</li>
+          <li>Microwave oven</li>
+          <li>Missile guidance system</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-orange"></span>Soft Real-Time</div>
+        <ul>
+          <li>Wilderness weather station</li>
+          <li>Video streaming systems</li>
+          <li>User interface response</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec-h">Architectural Patterns for Embedded Systems</div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Observe & React</div>
+        <p>Routinely monitor sensors; display values; if exceptional condition → alarm/action. Used in monitoring and alarm systems.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>Environmental Control</div>
+        <p>Analyze sensor data + actuator state; send control signals to actuators to change environment. Used in control systems.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-purple"></span>Process Pipeline</div>
+        <p>Data moves in sequence from one end to another through processes linked by synchronized buffers. Used in data acquisition and multimedia systems.</p>
+      </div>
+    </div>
+
+    <div class="sec-h">Timing Analysis</div>
+    <div class="callout">
+      Three key factors: <strong>Deadlines</strong> (times by which stimuli must be processed), <strong>Frequency</strong> (times per second a process must execute), <strong>Execution time</strong> (time required to process stimulus). Timing results determine process scheduling in the RTOS.
+    </div>
+
+    <div class="sec-h">RTOS Components</div>
+    <div class="grid-3">
+      <div class="card"><div class="card-title"><span class="dot dot-blue"></span>Real-time Clock</div><p>Provides information for process scheduling.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-blue"></span>Interrupt Handler</div><p>Manages aperiodic requests for service.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-blue"></span>Scheduler</div><p>Chooses the next process to be run.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-purple"></span>Resource Manager</div><p>Allocates memory and processor resources.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-purple"></span>Dispatcher</div><p>Starts process execution.</p></div>
+    </div>
+
+    <div class="sec-h">Scheduling Strategies</div>
+    <div class="grid-3">
+      <div class="card"><div class="card-title"><span class="dot dot-teal"></span>Non Pre-emptive</div><p>Once scheduled, process runs to completion (or until blocked for I/O).</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-teal"></span>Pre-emptive</div><p>Execution of a process can be stopped if a higher-priority process requires service.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-teal"></span>Algorithms</div><p>Round-robin · Rate monotonic · Shortest deadline first</p></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 21 — ASPECT-ORIENTED SE
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-gold" id="ch21">
+    <div class="ch-header">
+      <div class="ch-num">CH 21</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Aspect-Oriented Software Engineering</div>
+        <div class="ch-subtitle">Separation of Concerns · Aspects · Join Points · Pointcuts · Weaving</div>
+      </div>
+    </div>
+
+    <div class="callout gold">
+      <strong>Cross-cutting concerns</strong> are concerns whose implementation cuts across program components, leading to <em>tangling</em> (one module implements different requirements) and <em>scattering</em> (implementation of one concern scattered across many modules). Aspects solve this by encapsulating cross-cutting concerns.
+    </div>
+
+    <div class="sec-h">Key AOSE Terminology</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr><td>Aspect</td><td>Program abstraction that defines a cross-cutting concern. Includes pointcut definition and associated advice.</td></tr>
+          <tr><td>Advice</td><td>The code implementing a concern.</td></tr>
+          <tr><td>Join Point</td><td>Event in an executing program where aspect advice may be executed.</td></tr>
+          <tr><td>Pointcut</td><td>Statement defining the join points where the aspect advice should be executed.</td></tr>
+          <tr><td>Weaving</td><td>Incorporation of advice code at the specified join points by an aspect weaver.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sec-h">AspectJ Join Point Model Events</div>
+    <div class="tags">
+      <span class="tag tag-blue">Call Events</span>
+      <span class="tag tag-teal">Execution Events</span>
+      <span class="tag tag-purple">Initialisation Events</span>
+      <span class="tag tag-orange">Data Events</span>
+      <span class="tag tag-red">Exception Events</span>
+    </div>
+
+    <div class="callout">
+      <strong>V&V Problems with AOSE:</strong> Cannot read programs top-to-bottom (they are a web). Cannot derive traditional program flow graphs. Test coverage is unclear (each aspect once? At each join point?). Difficult to design systematic tests. Teams prefer conventional approaches for large projects.
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 22 — PROJECT MANAGEMENT
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-blue" id="ch22">
+    <div class="ch-header">
+      <div class="ch-num">CH 22</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Project Management</div>
+        <div class="ch-subtitle">Risk Management · Managing People · Teamwork</div>
+      </div>
+    </div>
+
+    <div class="sec-h">Risk Management Process</div>
+    <div class="flow">
+      <div class="flow-step"><div class="flow-label">Risk Identification</div><div class="flow-desc">Project, product, business risks</div></div>
+      <div class="flow-step"><div class="flow-label">Risk Analysis</div><div class="flow-desc">Assess likelihood and consequences</div></div>
+      <div class="flow-step"><div class="flow-label">Risk Planning</div><div class="flow-desc">Plans to avoid or minimise risks</div></div>
+      <div class="flow-step"><div class="flow-label">Risk Monitoring</div><div class="flow-desc">Monitor throughout the project</div></div>
+    </div>
+
+    <div class="sec-h">Risk Categories</div>
+    <div class="grid-3">
+      <div class="card"><div class="card-title"><span class="dot dot-red"></span>Project Risks</div><p>Affect schedule or resources. Examples: staff turnover, management change, hardware unavailability.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-orange"></span>Product Risks</div><p>Affect quality or performance. Examples: requirements change, specification delays, size underestimate.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-purple"></span>Business Risks</div><p>Affect the organisation. Examples: technology change making product obsolete, competitive product launched first.</p></div>
+    </div>
+
+    <div class="sec-h">Risk Strategies</div>
+    <div class="grid-3">
+      <div class="card"><div class="card-title"><span class="dot dot-teal"></span>Avoidance</div><p>Reduce the probability that the risk will arise.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-teal"></span>Minimisation</div><p>Reduce the impact of the risk on the project.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-teal"></span>Contingency Plans</div><p>Plans to deal with the risk if it does arise.</p></div>
+    </div>
+
+    <div class="sec-h">People Management & Motivation</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Key Factors</div>
+        <ul>
+          <li><strong>Consistency</strong> — treat all team members comparably</li>
+          <li><strong>Respect</strong> — respect different skills and differences</li>
+          <li><strong>Inclusion</strong> — involve all, consider all views</li>
+          <li><strong>Honesty</strong> — honest about project status</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Personality Types</div>
+        <ul>
+          <li><strong>Task-oriented</strong> — motivated by the work itself</li>
+          <li><strong>Self-oriented</strong> — work is means to personal goals</li>
+          <li><strong>Interaction-oriented</strong> — motivated by co-workers; critical for team cohesion</li>
+          <li>Effective groups have a <em>balance</em> of all types</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec-h">Group Cohesiveness</div>
+    <div class="callout teal">
+      In a cohesive group, members consider the group more important than any individual. Benefits: group quality standards developed collectively · team members learn from each other · knowledge is shared · continuity maintained if members leave · refactoring and continual improvement encouraged.
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 23 — PROJECT PLANNING
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-purple" id="ch23">
+    <div class="ch-header">
+      <div class="ch-num">CH 23</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Project Planning</div>
+        <div class="ch-subtitle">Pricing · Scheduling · Agile Planning · COCOMO II</div>
+      </div>
+    </div>
+
+    <div class="callout purple">
+      <strong>Software Pricing factors:</strong> Market opportunity · Cost estimate uncertainty · Contractual terms · Requirements volatility · Financial health of developer. Price ≠ Development cost — broader organizational, political, and business factors influence price.
+    </div>
+
+    <div class="sec-h">COCOMO II Models</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Model</th><th>When Used</th></tr></thead>
+        <tbody>
+          <tr><td>Application Composition</td><td>Prototyping projects; extensive reuse. Formula: PM = (NAP × (1 − %reuse/100)) / PROD</td></tr>
+          <tr><td>Early Design</td><td>After requirements agreed, before design starts. Formula: PM = A × Size^B × M</td></tr>
+          <tr><td>Reuse Model</td><td>Computing effort for integrating reusable components. Black-box vs white-box reuse.</td></tr>
+          <tr><td>Post-Architecture</td><td>After system architecture designed; most accurate. 17 multipliers.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sec-h">COCOMO II Multiplier Examples</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Multipliers (M)</div>
+        <ul>
+          <li><strong>RCPX</strong> — product reliability and complexity</li>
+          <li><strong>RUSE</strong> — reuse required</li>
+          <li><strong>PDIF</strong> — platform difficulty</li>
+          <li><strong>PREX</strong> — personnel experience</li>
+          <li><strong>PERS</strong> — personnel capability</li>
+          <li><strong>SCED</strong> — required schedule</li>
+          <li><strong>FCIL</strong> — team support facilities</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-purple"></span>Project Duration</div>
+        <p>Formula: <code>TDEV = 3 × (PM)^(0.33+0.2×(B-1.01))</code></p>
+        <p style="margin-top:10px;font-size:.82rem;color:var(--text-muted)">Time required is <em>independent of the number of people</em> working on the project.</p>
+        <p style="margin-top:8px;font-size:.82rem;color:var(--text-muted)">Adding people to a late project makes it later — communication overhead.</p>
+      </div>
+    </div>
+
+    <div class="sec-h">Agile Planning</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>Release Planning</div>
+        <p>Looks several months ahead; decides features for a release. Based on story priorities and schedule estimates.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>Iteration Planning</div>
+        <p>Shorter term (2–4 weeks of work). Plans the next increment. Number of stories reflects iteration time.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 24 — QUALITY MANAGEMENT
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-orange" id="ch24">
+    <div class="ch-header">
+      <div class="ch-num">CH 24</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Quality Management</div>
+        <div class="ch-subtitle">Standards · Reviews · Inspections · Software Metrics · CK Metrics</div>
+      </div>
+    </div>
+
+    <div class="sec-h">Software Quality Attributes</div>
+    <div class="tags">
+      <span class="tag tag-blue">Safety</span><span class="tag tag-blue">Security</span><span class="tag tag-teal">Understandability</span><span class="tag tag-teal">Testability</span><span class="tag tag-purple">Portability</span><span class="tag tag-purple">Reliability</span><span class="tag tag-orange">Resilience</span><span class="tag tag-orange">Robustness</span><span class="tag tag-red">Adaptability</span><span class="tag tag-red">Usability</span><span class="tag tag-blue">Reusability</span><span class="tag tag-teal">Modularity</span><span class="tag tag-purple">Efficiency</span>
+    </div>
+
+    <div class="sec-h">Software Standards Importance</div>
+    <div class="callout">
+      Standards play a key role in quality management: they encapsulate best practice, provide a framework for defining quality in a particular setting, and provide continuity for new staff. Product standards define component characteristics; process standards define how the software process should be enacted.
+    </div>
+
+    <div class="sec-h">ISO 9001</div>
+    <div class="callout orange">
+      An international set of standards applicable to organizations that design, develop and maintain products including software. A <em>framework</em> for developing software standards, not prescriptive standards itself. Organizations can seek ISO 9001 certification by having an external body certify their quality manual conforms to the standard.
+    </div>
+
+    <div class="sec-h">Program Inspections</div>
+    <div class="callout">
+      Peer reviews where engineers examine source code to discover anomalies and defects. Can be used before implementation. <strong>Inspection Checklist Areas:</strong> Data faults · Control faults · I/O faults · Interface faults · Storage management faults · Exception management faults.
+    </div>
+
+    <div class="sec-h">CK Object-Oriented Metrics Suite</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Metric</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>WMC (Weighted Methods per Class)</td><td>Number of methods weighted by complexity. Higher = more complex, harder to understand, less reusable.</td></tr>
+          <tr><td>DIT (Depth of Inheritance Tree)</td><td>Number of levels in inheritance tree. Deeper = more complex; more classes to understand.</td></tr>
+          <tr><td>NOC (Number of Children)</td><td>Number of immediate subclasses. Higher = more reuse; more validation effort needed for base classes.</td></tr>
+          <tr><td>CBO (Coupling Between Object Classes)</td><td>How much coupling exists. Higher = more dependent; changes more likely to affect other classes.</td></tr>
+          <tr><td>RFC (Response for a Class)</td><td>Methods potentially executed in response to a message. Higher = more complex.</td></tr>
+          <tr><td>LCOM (Lack of Cohesion in Methods)</td><td>Difference between method pairs without/with shared attributes. Debated metric.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 25 — CONFIGURATION MANAGEMENT
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-teal" id="ch25">
+    <div class="ch-header">
+      <div class="ch-num">CH 25</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Configuration Management</div>
+        <div class="ch-subtitle">Change Management · Version Management · System Building · Release Management</div>
+      </div>
+    </div>
+
+    <div class="callout teal">
+      <strong>CM Definition:</strong> Concerned with the policies, processes and tools for managing changing software systems. Needed because it is easy to lose track of what changes and component versions have been incorporated into each system version.
+    </div>
+
+    <div class="sec-h">CM Key Terminology</div>
+    <div class="grid-2">
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Configuration Item (SCI)</div><div class="def-desc">Anything associated with a software project placed under configuration control — has a unique name and may exist in multiple versions.</div></div>
+        <div class="def-item"><div class="def-term">Version</div><div class="def-desc">An instance of a configuration item that differs from other instances. Identified by name + version number.</div></div>
+        <div class="def-item"><div class="def-term">Baseline</div><div class="def-desc">A collection of component versions making up a system. Controlled — component versions cannot be changed. System can always be recreated.</div></div>
+      </div>
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Codeline</div><div class="def-desc">A set of versions of a software component and its dependencies — shows evolution history of a component.</div></div>
+        <div class="def-item"><div class="def-term">Mainline</div><div class="def-desc">A sequence of baselines representing different versions of a system.</div></div>
+        <div class="def-item"><div class="def-term">Branch / Merge</div><div class="def-desc">Branch: new codeline from an existing version. Merge: new version created by combining separate codeline versions.</div></div>
+      </div>
+    </div>
+
+    <div class="sec-h">Git (Distributed VCS)</div>
+    <div class="callout">
+      Created by Linus Torvalds in 2005 to manage the Linux kernel. <strong>Distributed</strong> — maintains a clone of the repository on every user's computer. Benefits: <strong>Resilience</strong> (everyone has a copy), <strong>Speed</strong> (local operations), <strong>Flexibility</strong> (safe local experimentation). Mainstream since ~2015 with Docker containers for DevOps.
+    </div>
+
+    <div class="sec-h">System Building</div>
+    <div class="grid-3">
+      <div class="card"><div class="card-title"><span class="dot dot-blue"></span>Development System</div><p>Development tools (compilers, editors). Developers check out code into private workspace.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-blue"></span>Build Server</div><p>Used to build definitive executable versions. Developers check in code before building. May use external libraries not in VCS.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-blue"></span>Target Environment</div><p>Platform on which system executes. May be different hardware/OS from development system.</p></div>
+    </div>
+
+    <div class="callout teal"><strong>Minimizing Recompilation:</strong> Tools compare modification timestamps (or checksums) of source vs object code. Only recompile when source code has changed. Checksums allow parallel compilation; timestamps may not. <strong>"Breaking the build"</strong> = pushing code that causes system tests to fail. Use "integrate twice" approach — test locally first.</div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CH 26 — PROCESS IMPROVEMENT
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-purple" id="ch26">
+    <div class="ch-header">
+      <div class="ch-num">CH 26</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Process Improvement</div>
+        <div class="ch-subtitle">Measurement · Analysis · Change · CMMI Framework</div>
+      </div>
+    </div>
+
+    <div class="sec-h">Process Improvement Cycle</div>
+    <div class="flow">
+      <div class="flow-step"><div class="flow-label">Process Measurement</div><div class="flow-desc">Quantitative data collected; baseline</div></div>
+      <div class="flow-step"><div class="flow-label">Process Analysis</div><div class="flow-desc">Assess; identify bottlenecks and weaknesses</div></div>
+      <div class="flow-step"><div class="flow-label">Process Change</div><div class="flow-desc">Introduce identified improvements</div></div>
+    </div>
+
+    <div class="sec-h">GQM (Goal-Question-Metric) Paradigm</div>
+    <div class="callout">
+      <strong>Goals</strong> — what is the organisation trying to achieve? <strong>Questions</strong> — questions about areas of uncertainty related to goals. <strong>Metrics</strong> — measurements to answer the questions. Questions: Why are we improving? What information do we need? What measurements are required?
+    </div>
+
+    <div class="sec-h">CMMI Framework</div>
+    <div class="callout purple">
+      Capability Maturity Model Integration (CMMI) — from SEI (Software Engineering Institute). Two instantiations: <strong>Staged</strong> (capability levels) and <strong>Continuous</strong> (capability rating per process area). 24 process areas in 4 groups: Process Management, Project Management, Engineering, Support.
+    </div>
+
+    <div class="sec-h">CMMI Staged Maturity Levels</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Level</th><th>Name</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Initial</td><td>Essentially uncontrolled — ad hoc processes.</td></tr>
+          <tr><td>2</td><td>Managed</td><td>Product management procedures defined and used. Requirements management, project planning, monitoring.</td></tr>
+          <tr><td>3</td><td>Defined</td><td>Process management procedures and strategies defined and used organization-wide.</td></tr>
+          <tr><td>4</td><td>Quantitatively Managed</td><td>Quality management strategies defined and used. Quantitative process control.</td></tr>
+          <tr><td>5</td><td>Optimising</td><td>Process improvement strategies defined and used. Continuous improvement.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sec-h">Change Persistence Problems</div>
+    <div class="callout orange">
+      Common problem: changes introduced then subsequently discarded. Causes: reliance on individual "evangelists" — when they leave, processes revert. Solution: <strong>Change institutionalization</strong> — process change is not dependent on individuals but becomes part of standard practice company-wide, with support and training.
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CLOUD-BASED SOFTWARE
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-teal" id="cloud">
+    <div class="ch-header">
+      <div class="ch-num">CLOUD</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Cloud-Based Software</div>
+        <div class="ch-subtitle">Virtualization · Containers · Docker · IaaS · PaaS · SaaS · Multi-tenant</div>
+      </div>
+    </div>
+
+    <div class="sec-h">Scaleability, Elasticity & Resilience</div>
+    <div class="grid-3">
+      <div class="card"><div class="card-title"><span class="dot dot-teal"></span>Scaleability</div><p>Ability to cope with increasing numbers of users. System automatically adapts to maintain performance and response time.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-teal"></span>Elasticity</div><p>Related to scaleability but also allows <em>scaling down</em>. Add or remove servers dynamically as demand changes.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-teal"></span>Resilience</div><p>Tolerate server failures. Multiple copies of software concurrently available — if one fails, others continue.</p></div>
+    </div>
+
+    <div class="sec-h">Virtualization Technologies</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Virtual Machines</div>
+        <ul>
+          <li>Hypervisor provides hardware emulation</li>
+          <li>Same hardware platform as a physical server</li>
+          <li>Type I and Type II hypervisors</li>
+          <li>Gigabytes in size; minutes to start/stop</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Containers (Docker)</div>
+        <ul>
+          <li>OS virtualization — independent servers share one OS</li>
+          <li>Megabytes in size; seconds to start/stop</li>
+          <li>Docker image = base layer + your software layer</li>
+          <li>Solve dependency problems; portable across clouds</li>
+          <li>Docker Hub = registry of images</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec-h">Everything as a Service</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Model</th><th>Description</th><th>Management Responsibility</th></tr></thead>
+        <tbody>
+          <tr><td>IaaS</td><td>Compute, network, storage services over the cloud. No own physical servers.</td><td>Customer manages OS, middleware, apps</td></tr>
+          <tr><td>PaaS</td><td>Libraries and frameworks provided by cloud provider for software implementation.</td><td>Shared: customer manages app; provider manages platform</td></tr>
+          <tr><td>SaaS</td><td>Application software delivered as a service. Subscription payment model.</td><td>Provider manages everything</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sec-h">Multi-tenant vs Multi-instance</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>Multi-tenant</div>
+        <ul>
+          <li>All customers served by a single system instance and shared database</li>
+          <li>Database partitioned; items tagged with tenant identifier</li>
+          <li><strong>Advantages:</strong> resource optimization, better security design, simpler updates</li>
+          <li><strong>Disadvantages:</strong> inflexibility, theoretical data leakage risk, complexity</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-purple"></span>Multi-instance</div>
+        <ul>
+          <li>Each customer has separate system instance and database</li>
+          <li>VM-based or container-based</li>
+          <li><strong>Advantages:</strong> flexibility, security (no data leakage), scaleability, resilience</li>
+          <li><strong>Disadvantages:</strong> higher cost, complex update management</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       DEVOPS
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-orange" id="devops">
+    <div class="ch-header">
+      <div class="ch-num">DEVOPS</div>
+      <div class="ch-title-block">
+        <div class="ch-title">DevOps & Code Management</div>
+        <div class="ch-subtitle">DevOps Principles · Code Management · CI/CD · Infrastructure as Code · Measurement</div>
+      </div>
+    </div>
+
+    <div class="callout orange">
+      <strong>DevOps = Development + Operations.</strong> The same team is responsible for developing, deploying, and supporting the software. Three principles: (1) Everyone responsible for everything · (2) Automate everything that can be automated · (3) Measure first, change later.
+    </div>
+
+    <div class="sec-h">DevOps Benefits</div>
+    <div class="grid-2">
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Faster Deployment</div><div class="def-desc">Software deployed to production faster — communication delays dramatically reduced.</div></div>
+        <div class="def-item"><div class="def-term">Reduced Risk</div><div class="def-desc">Small increment in each release — less chance of feature interactions causing failures.</div></div>
+      </div>
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Faster Repair</div><div class="def-desc">DevOps teams work together to get software up quickly — no hand-off delays.</div></div>
+        <div class="def-item"><div class="def-term">More Productive Teams</div><div class="def-desc">Teams are happier and more productive; lower staff turnover.</div></div>
+      </div>
+    </div>
+
+    <div class="sec-h">DevOps Automation Aspects</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Aspect</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>Continuous Integration</td><td>Each commit to master branch triggers a build and test of the system.</td></tr>
+          <tr><td>Continuous Delivery</td><td>Simulation of production environment created; system tested there. Ready for delivery.</td></tr>
+          <tr><td>Continuous Deployment</td><td>New release automatically available to users every time a change is made to the master branch.</td></tr>
+          <tr><td>Infrastructure as Code</td><td>Machine-readable models of infrastructure; CM tools (Puppet, Chef) build the execution platform.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout teal">
+      <strong>"Breaking the build"</strong> — pushing code that causes system tests to fail. Priority: discover and fix immediately. <strong>Integrate twice</strong> — always integrate and test on your own computer before pushing to the project repository.
+    </div>
+
+    <div class="sec-h">Infrastructure as Code Characteristics</div>
+    <div class="grid-2">
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Visibility</div><div class="def-desc">Infrastructure defined as standalone model that can be read, discussed, reviewed by the whole team.</div></div>
+        <div class="def-item"><div class="def-term">Reproducibility</div><div class="def-desc">Configuration management tools always run installation tasks in the same sequence — same environment always created.</div></div>
+      </div>
+      <div class="def-list">
+        <div class="def-item"><div class="def-term">Reliability</div><div class="def-desc">Automating avoids simple mistakes that administrators make, especially when changes needed on multiple servers.</div></div>
+        <div class="def-item"><div class="def-term">Recovery</div><div class="def-desc">Infrastructure model can be versioned. If changes cause problems, revert to older version.</div></div>
+      </div>
+    </div>
+
+    <div class="sec-h">DevOps Measurement Scorecard (Chakravarty/IBM)</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Process Metrics (want decreases)</div>
+        <ul>
+          <li>Number of failed deployments</li>
+          <li>Mean time to recovery after failure</li>
+          <li>Lead time from development to deployment</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>Process Metrics (want increases)</div>
+        <ul>
+          <li>Deployment frequency</li>
+          <li>Lines of changed code shipped</li>
+          <li>Service availability and performance (stable/improving)</li>
+          <li>New customers increasing; complaints decreasing</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       REAL-TIME SE (separate topic)
+  ═══════════════════════════════════════════ -->
+  <section class="chapter-section band-red" id="realtime">
+    <div class="ch-header">
+      <div class="ch-num">RT-SE</div>
+      <div class="ch-title-block">
+        <div class="ch-title">Real-Time Software Engineering</div>
+        <div class="ch-subtitle">Stimuli/Responses · Design Process · Timing Analysis · Process Management</div>
+      </div>
+    </div>
+
+    <div class="callout red">
+      <strong>Responsiveness</strong> is the critical difference between embedded systems and information systems. Correctness depends on both the response AND the time taken to generate that response.
+    </div>
+
+    <div class="sec-h">Stimulus Types</div>
+    <div class="grid-2">
+      <div class="card"><div class="card-title"><span class="dot dot-orange"></span>Periodic Stimuli</div><p>Stimuli that occur at <em>predictable</em> time intervals. E.g., temperature sensor polled 10 times per second.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-red"></span>Aperiodic Stimuli</div><p>Stimuli that occur at <em>unpredictable</em> times. E.g., a system power failure triggering an interrupt.</p></div>
+    </div>
+
+    <div class="sec-h">Design Process Activities</div>
+    <div class="tags">
+      <span class="tag tag-blue">Platform Selection</span>
+      <span class="tag tag-teal">Stimuli/Response Identification</span>
+      <span class="tag tag-purple">Timing Analysis</span>
+      <span class="tag tag-orange">Process Design</span>
+      <span class="tag tag-red">Algorithm Design</span>
+      <span class="tag tag-blue">Data Design</span>
+      <span class="tag tag-teal">Process Scheduling</span>
+    </div>
+
+    <div class="sec-h">Process Priority Levels</div>
+    <div class="grid-2">
+      <div class="card"><div class="card-title"><span class="dot dot-red"></span>Interrupt Level Priority</div><p>Highest priority. Allocated to processes requiring a very fast response to aperiodic stimuli.</p></div>
+      <div class="card"><div class="card-title"><span class="dot dot-orange"></span>Clock Level Priority</div><p>Allocated to periodic processes. Uses real-time clock to schedule process execution.</p></div>
+    </div>
+
+    <div class="callout teal">
+      <strong>Power Failure Timing Example:</strong> Equipment damage in 50ms → battery backup takes 16ms to be operational → checking process runs every 4ms (250x/second) → failure detected after 3 sustained readings → worst case: 3×4ms wait + 16ms startup = 28ms < 50ms deadline. ✓
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div style="padding:40px 60px;border-top:1px solid var(--border);text-align:center;">
+    <p style="font-family:'Source Code Pro',monospace;font-size:.72rem;color:var(--text-dim);letter-spacing:.1em;">CS3022 / CS3023 SOFTWARE ENGINEERING — COMPLETE STUDY GUIDE — ALL CHAPTERS COVERED</p>
+  </div>
+
+</main>
+
+<script>
+  // Active nav highlight on scroll
+  const sections = document.querySelectorAll('section[id], div[id]');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(item => item.classList.remove('active'));
+        const active = document.querySelector(`.nav-item[href="#${entry.target.id}"]`);
+        if (active) {
+          active.classList.add('active');
+          active.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+
+  // Close sidebar on nav click (mobile)
+  navItems.forEach(item => {
+    item.addEventListener('click', () => {
+      document.getElementById('sidebar').classList.remove('open');
+    });
+  });
+</script>
+</body>
+</html>
