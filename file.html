@@ -750,6 +750,76 @@
       <div class="flow-step"><div class="flow-num">Phase 4</div><div class="flow-label">Transition</div><div class="flow-desc">Deploy to operating environment</div></div>
     </div>
     <div class="callout teal"><strong>RUP Good Practice:</strong> Develop iteratively · Manage requirements · Use component-based architectures · Visually model software · Verify quality · Control changes.</div>
+    
+    <div class="sec-h">Incremental Development &amp; Delivery</div>
+    <div class="card">
+      <p>Rather than deliver the system as a single delivery, the development and delivery is broken down into increments with each increment delivering part of the required functionality. User requirements are prioritised and the highest priority requirements are included in early increments. Once the development of an increment is started, the requirements are frozen though requirements for later increments can continue to evolve.</p>
+    </div>
+
+    <div class="sec-h">Incremental development and delivery</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Incremental development</div>
+        <p>Develop the system in increments and evaluate each increment before proceeding to the development of the next increment; this is the normal approach used in agile methods. Evaluation is typically done by a user or customer proxy.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>Incremental delivery</div>
+        <p>Deploy an increment for use by end-users so practical evaluation of the software is possible. This gives more realistic feedback about practical use, although it can be difficult to implement for replacement systems because early increments have less functionality than the system being replaced.</p>
+      </div>
+    </div>
+
+    <div class="sec-h">Incremental delivery advantages</div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-gold"></span>Early customer value</div>
+        <p>Customer value can be delivered with each increment so system functionality is available earlier.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-purple"></span>Prototyping for requirements</div>
+        <p>Early increments act as a prototype to help elicit requirements for later increments.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-red"></span>Lower risk</div>
+        <p>Lower risk of overall project failure; highest priority services tend to receive the most testing.</p>
+      </div>
+    </div>
+
+    <div class="sec-h">Incremental delivery problems</div>
+    <div class="card">
+      <p>Most systems require a set of basic facilities that are used by different parts of the system. As requirements are not defined in detail until an increment is to be implemented, it can be hard to identify common facilities that are needed by all increments. The essence of iterative processes is that the specification is developed in conjunction with the software. However, this conflicts with the procurement model of many organisations, where the complete system specification is part of the system development contract.</p>
+    </div>
+
+    <div class="sec-h">Boehm's Spiral Model</div>
+    <div class="card">
+      <p>The process is represented as a spiral rather than as a sequence of activities with backtracking. Each loop in the spiral represents a phase in the process. There are no fixed phases such as specification or design — loops in the spiral are chosen depending on what is required. Risks are explicitly assessed and resolved throughout the process.</p>
+    </div>
+
+    <div class="sec-h">Spiral model sectors</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-blue"></span>Objective setting</div>
+        <p>Specific objectives for the phase are identified.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-orange"></span>Risk assessment &amp; reduction</div>
+        <p>Risks are assessed and activities put in place to reduce the key risks.</p>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot dot-teal"></span>Development &amp; validation</div>
+        <p>A development model for the system is chosen which can be any of the generic models.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-purple"></span>Planning</div>
+        <p>The project is reviewed and the next phase of the spiral is planned.</p>
+      </div>
+    </div>
+
+    <div class="sec-h">Spiral model usage</div>
+    <div class="card">
+      <p>The spiral model has been very influential in helping people think about iteration in software processes and introducing the risk-driven approach to development. In practice, however, the model is rarely used exactly as published for practical software development.</p>
+    </div>
   </section>
 
   <!-- ═══════════════════════════════════════════
